@@ -568,6 +568,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
     var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
     if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    if(!h){
+      // sem preço digitado: mostra os mesmos blocos, vazios
+      document.querySelectorAll(&quot;#tPromo tbody tr&quot;).forEach(function(tr){
+        var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+        h+=&#x27;&lt;div class=&quot;chip&#x27;+(tr.classList.contains(&quot;total&quot;)?&quot; tot&quot;:&quot;&quot;)+&#x27;&quot;&gt;&lt;div class=&quot;k&quot;&gt;&#x27;+td[0].textContent+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+      });
+      if(h) h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+    }
     box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
@@ -1187,6 +1195,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
     var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
     if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    if(!h){
+      // sem preço digitado: mostra os mesmos blocos, vazios
+      document.querySelectorAll(&quot;#tPromo tbody tr&quot;).forEach(function(tr){
+        var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+        h+=&#x27;&lt;div class=&quot;chip&#x27;+(tr.classList.contains(&quot;total&quot;)?&quot; tot&quot;:&quot;&quot;)+&#x27;&quot;&gt;&lt;div class=&quot;k&quot;&gt;&#x27;+td[0].textContent+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+      });
+      if(h) h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+    }
     box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
@@ -1817,6 +1833,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
     var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
     if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    if(!h){
+      // sem preço digitado: mostra os mesmos blocos, vazios
+      document.querySelectorAll(&quot;#tPromo tbody tr&quot;).forEach(function(tr){
+        var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+        h+=&#x27;&lt;div class=&quot;chip&#x27;+(tr.classList.contains(&quot;total&quot;)?&quot; tot&quot;:&quot;&quot;)+&#x27;&quot;&gt;&lt;div class=&quot;k&quot;&gt;&#x27;+td[0].textContent+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+      });
+      if(h) h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+    }
     box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
@@ -2424,6 +2448,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
     var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
     if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    if(!h){
+      // sem preço digitado: mostra os mesmos blocos, vazios
+      document.querySelectorAll(&quot;#tPromo tbody tr&quot;).forEach(function(tr){
+        var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+        h+=&#x27;&lt;div class=&quot;chip&#x27;+(tr.classList.contains(&quot;total&quot;)?&quot; tot&quot;:&quot;&quot;)+&#x27;&quot;&gt;&lt;div class=&quot;k&quot;&gt;&#x27;+td[0].textContent+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+      });
+      if(h) h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+    }
     box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
@@ -3033,6 +3065,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
     var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
     if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    if(!h){
+      // sem preço digitado: mostra os mesmos blocos, vazios
+      document.querySelectorAll(&quot;#tPromo tbody tr&quot;).forEach(function(tr){
+        var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+        h+=&#x27;&lt;div class=&quot;chip&#x27;+(tr.classList.contains(&quot;total&quot;)?&quot; tot&quot;:&quot;&quot;)+&#x27;&quot;&gt;&lt;div class=&quot;k&quot;&gt;&#x27;+td[0].textContent+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+      });
+      if(h) h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;—&lt;/div&gt;&lt;/div&gt;&#x27;;
+    }
     box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
