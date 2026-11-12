@@ -105,7 +105,14 @@ tbody tr:last-child td{border-bottom:0}
 .three{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:12px}
 @media (max-width:560px){.three{grid-template-columns:1fr}}
 .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.tlabel{display:none}
 @media (min-width:1400px){
+  .head2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
+  .head2 .bar{margin-bottom:0}
+  .tlabel{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+  .hr .tabs{width:100%;display:flex}
+  .hr .tabs button{flex:1 1 auto;padding:9px 10px}
+  .hr .row2{margin-top:8px}
   .top{max-width:none;padding:20px 28px 0}
   #banco{max-width:none;padding:16px 28px 48px}
   .sub{margin-bottom:12px}
@@ -117,6 +124,8 @@ tbody tr:last-child td{border-bottom:0}
   <h1>Precificação Marketplaces</h1>
   <p class="sub">Shopee, Mercado Livre, TikTok Shop, Temu e Shein com as taxas de cada plataforma calculadas automaticamente.</p>
 
+  <div class="head2">
+  <div class="hl">
   <div class="bar">
     <div class="prod">
       <label for="prodIn">Produto (nome ou SKU)</label>
@@ -128,6 +137,9 @@ tbody tr:last-child td{border-bottom:0}
     </div>
     <button type="button" class="primary" id="btnReg">Registrar simulação</button>
   </div>
+  </div>
+  <div class="hr">
+  <span class="tlabel" aria-hidden="true">Marketplace</span>
 
   <div class="tabs" role="tablist" aria-label="Marketplace">
     <button role="tab" data-t="shopee" aria-selected="true">Shopee</button>
@@ -140,6 +152,8 @@ tbody tr:last-child td{border-bottom:0}
   </div>
   <div class="row2" id="syncRow">
     <label class="sync"><input type="checkbox" id="sync" checked> Usar os mesmos dados (custo, margem, embalagem, comissões, desconto) em todas as abas</label>
+  </div>
+  </div>
   </div>
 </div>
 
@@ -271,7 +285,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
 .simh .chip.neg .v{color:var(--warn)}
-.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center;grid-column:1/-1}
 
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
@@ -861,7 +875,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
 .simh .chip.neg .v{color:var(--warn)}
-.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center;grid-column:1/-1}
 
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
@@ -1504,7 +1518,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
 .simh .chip.neg .v{color:var(--warn)}
-.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center;grid-column:1/-1}
 
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
@@ -2118,7 +2132,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
 .simh .chip.neg .v{color:var(--warn)}
-.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center;grid-column:1/-1}
 
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
@@ -2726,7 +2740,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
 .simh .chip.neg .v{color:var(--warn)}
-.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center;grid-column:1/-1}
 
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
