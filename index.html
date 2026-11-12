@@ -272,7 +272,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 /* desktop largo: 3 colunas, menos rolagem */
 @media (min-width:1400px){
   .wrap{max-width:none;padding:20px 28px 40px}
-  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  .grid{grid-template-columns:340px minmax(0,1fr);margin-top:16px}
   aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
   aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
   aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
@@ -282,7 +282,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   aside.panel .field{margin-bottom:10px}
   aside.panel .sep{margin:10px 0}
-  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr);column-gap:20px;align-items:start}
   main &gt; *{grid-column:1;min-width:0}
   main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
   .tables th,.tables td{padding:5px 4px}
@@ -290,6 +290,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .alerts .alert{padding:8px 12px}
   main &gt; details{grid-column:1}
   .hero .v{font-size:34px}
+  .hero{grid-template-columns:1fr}
+  .hero &gt; div + div{border-left:0;border-top:1px solid var(--line)}
+  .hero &gt; div{padding:16px 20px}
+}
+@media (min-width:1700px){
+  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
+  main &gt; section.panel:not(.ruler), main &gt; details{grid-column:2}
+  .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
@@ -818,7 +826,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 /* desktop largo: 3 colunas, menos rolagem */
 @media (min-width:1400px){
   .wrap{max-width:none;padding:20px 28px 40px}
-  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  .grid{grid-template-columns:340px minmax(0,1fr);margin-top:16px}
   aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
   aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
   aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
@@ -828,7 +836,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   aside.panel .field{margin-bottom:10px}
   aside.panel .sep{margin:10px 0}
-  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr);column-gap:20px;align-items:start}
   main &gt; *{grid-column:1;min-width:0}
   main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
   .tables th,.tables td{padding:5px 4px}
@@ -836,6 +844,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .alerts .alert{padding:8px 12px}
   main &gt; details{grid-column:1}
   .hero .v{font-size:34px}
+  .hero{grid-template-columns:1fr}
+  .hero &gt; div + div{border-left:0;border-top:1px solid var(--line)}
+  .hero &gt; div{padding:16px 20px}
+}
+@media (min-width:1700px){
+  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
+  main &gt; section.panel:not(.ruler), main &gt; details{grid-column:2}
+  .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
@@ -1397,7 +1413,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 /* desktop largo: 3 colunas, menos rolagem */
 @media (min-width:1400px){
   .wrap{max-width:none;padding:20px 28px 40px}
-  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  .grid{grid-template-columns:340px minmax(0,1fr);margin-top:16px}
   aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
   aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
   aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
@@ -1407,7 +1423,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   aside.panel .field{margin-bottom:10px}
   aside.panel .sep{margin:10px 0}
-  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr);column-gap:20px;align-items:start}
   main &gt; *{grid-column:1;min-width:0}
   main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
   .tables th,.tables td{padding:5px 4px}
@@ -1415,6 +1431,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .alerts .alert{padding:8px 12px}
   main &gt; details{grid-column:1}
   .hero .v{font-size:34px}
+  .hero{grid-template-columns:1fr}
+  .hero &gt; div + div{border-left:0;border-top:1px solid var(--line)}
+  .hero &gt; div{padding:16px 20px}
+}
+@media (min-width:1700px){
+  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
+  main &gt; section.panel:not(.ruler), main &gt; details{grid-column:2}
+  .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
@@ -1954,7 +1978,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 /* desktop largo: 3 colunas, menos rolagem */
 @media (min-width:1400px){
   .wrap{max-width:none;padding:20px 28px 40px}
-  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  .grid{grid-template-columns:340px minmax(0,1fr);margin-top:16px}
   aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
   aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
   aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
@@ -1964,7 +1988,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   aside.panel .field{margin-bottom:10px}
   aside.panel .sep{margin:10px 0}
-  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr);column-gap:20px;align-items:start}
   main &gt; *{grid-column:1;min-width:0}
   main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
   .tables th,.tables td{padding:5px 4px}
@@ -1972,6 +1996,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .alerts .alert{padding:8px 12px}
   main &gt; details{grid-column:1}
   .hero .v{font-size:34px}
+  .hero{grid-template-columns:1fr}
+  .hero &gt; div + div{border-left:0;border-top:1px solid var(--line)}
+  .hero &gt; div{padding:16px 20px}
+}
+@media (min-width:1700px){
+  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
+  main &gt; section.panel:not(.ruler), main &gt; details{grid-column:2}
+  .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
@@ -2505,7 +2537,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 /* desktop largo: 3 colunas, menos rolagem */
 @media (min-width:1400px){
   .wrap{max-width:none;padding:20px 28px 40px}
-  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  .grid{grid-template-columns:340px minmax(0,1fr);margin-top:16px}
   aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
   aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
   aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
@@ -2515,7 +2547,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   aside.panel .field{margin-bottom:10px}
   aside.panel .sep{margin:10px 0}
-  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr);column-gap:20px;align-items:start}
   main &gt; *{grid-column:1;min-width:0}
   main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
   .tables th,.tables td{padding:5px 4px}
@@ -2523,6 +2555,14 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .alerts .alert{padding:8px 12px}
   main &gt; details{grid-column:1}
   .hero .v{font-size:34px}
+  .hero{grid-template-columns:1fr}
+  .hero &gt; div + div{border-left:0;border-top:1px solid var(--line)}
+  .hero &gt; div{padding:16px 20px}
+}
+@media (min-width:1700px){
+  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
+  main &gt; section.panel:not(.ruler), main &gt; details{grid-column:2}
+  .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
