@@ -264,6 +264,15 @@ button{font:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px
 button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel)}
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
+.simh{display:none}
+.simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
+.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
+.simh .chip.tot{background:var(--profit-soft);border-color:transparent}
+.simh .chip.tot .v{color:var(--profit)}
+.simh .chip.neg .v{color:var(--warn)}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
 .sim{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
@@ -296,6 +305,22 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
   main &gt; details{grid-column:2;grid-row:6}
   .tables th,.tables td{padding:5px 4px}
+  /* régua compacta */
+  .ruler{padding:14px 18px}
+  .ruler h2{font-size:14px;margin:0 0 4px}
+  .ruler .inner{padding:24px 0 26px}
+  .ruler .bar{min-height:44px}
+  .ruler .seg{padding:5px 8px;font-size:10.5px;line-height:1.2}
+  .ruler .seg b{font-size:11.5px}
+  .marker i{font-size:11px;padding:1px 6px}
+  .ruler .legend{font-size:11px;margin-top:0}
+  /* simulador em faixa */
+  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
+  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim) .sim .field{margin:0}
+  .panel:has(#tSim) .scroll{display:none}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
@@ -398,6 +423,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
+        &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -514,6 +540,21 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var maxB = bands[bandOf(target)].max, g = 0;
     while(toPago(real) &gt; maxB + 1e-9 &amp;&amp; g&lt;5){ full = r2(full-0.01); real = d&gt;0 ? r2(full*(1-d)) : full; g++; }
     return {full:full, anun:real, pago:toPago(real), semAjuste:toPago(target), tipo:t, c:c};
+  }
+
+  function simChips(){
+    var box=document.getElementById(&quot;simH&quot;); if(!box) return;
+    var trs=document.querySelectorAll(&quot;#tSim tbody tr&quot;), h=&quot;&quot;;
+    trs.forEach(function(tr){
+      var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+      var lab=td[0].textContent, val=td[2].textContent, pc=td[1].textContent.trim();
+      var cls = tr.classList.contains(&quot;total&quot;) ? &quot; tot&quot;+(tr.classList.contains(&quot;neg&quot;)?&quot; neg&quot;:&quot;&quot;) : &quot;&quot;;
+      h+=&#x27;&lt;div class=&quot;chip&#x27;+cls+&#x27;&quot;&gt;&lt;div class=&quot;k&quot; title=&quot;&#x27;+lab+(pc?&quot; (&quot;+pc+&quot;)&quot;:&quot;&quot;)+&#x27;&quot;&gt;&#x27;+lab+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+val+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;;
+    });
+    var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
+    var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
+    if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
   function rows(bd, p){
@@ -652,6 +693,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     } else {
       $(&quot;tSim&quot;).innerHTML = &#x27;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;note&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&#x27;;
     }
+    simChips();
 
     $(&quot;alerts&quot;).innerHTML = alerts.map(function(a){ return &#x27;&lt;div class=&quot;alert&#x27;+(a[1]?&#x27; ok&#x27;:&#x27;&#x27;)+&#x27;&quot;&gt;&#x27;+a[0]+&#x27;&lt;/div&gt;&#x27;; }).join(&quot;&quot;);
   }
@@ -812,6 +854,15 @@ button{font:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px
 button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel)}
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
+.simh{display:none}
+.simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
+.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
+.simh .chip.tot{background:var(--profit-soft);border-color:transparent}
+.simh .chip.tot .v{color:var(--profit)}
+.simh .chip.neg .v{color:var(--warn)}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
 .seg-tog{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--field)}
@@ -857,6 +908,22 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
   main &gt; details{grid-column:2;grid-row:6}
   .tables th,.tables td{padding:5px 4px}
+  /* régua compacta */
+  .ruler{padding:14px 18px}
+  .ruler h2{font-size:14px;margin:0 0 4px}
+  .ruler .inner{padding:24px 0 26px}
+  .ruler .bar{min-height:44px}
+  .ruler .seg{padding:5px 8px;font-size:10.5px;line-height:1.2}
+  .ruler .seg b{font-size:11.5px}
+  .marker i{font-size:11px;padding:1px 6px}
+  .ruler .legend{font-size:11px;margin-top:0}
+  /* simulador em faixa */
+  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
+  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim) .sim .field{margin:0}
+  .panel:has(#tSim) .scroll{display:none}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
@@ -969,6 +1036,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
+        &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -1091,6 +1159,21 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var maxB = bands[bandOf(target)].max, g = 0;
     while(toPago(real) &gt; maxB + 1e-9 &amp;&amp; g&lt;5){ full = r2(full-0.01); real = d&gt;0 ? r2(full*(1-d)) : full; g++; }
     return {full:full, anun:real, pago:toPago(real), semAjuste:toPago(target), tipo:t, c:c};
+  }
+
+  function simChips(){
+    var box=document.getElementById(&quot;simH&quot;); if(!box) return;
+    var trs=document.querySelectorAll(&quot;#tSim tbody tr&quot;), h=&quot;&quot;;
+    trs.forEach(function(tr){
+      var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+      var lab=td[0].textContent, val=td[2].textContent, pc=td[1].textContent.trim();
+      var cls = tr.classList.contains(&quot;total&quot;) ? &quot; tot&quot;+(tr.classList.contains(&quot;neg&quot;)?&quot; neg&quot;:&quot;&quot;) : &quot;&quot;;
+      h+=&#x27;&lt;div class=&quot;chip&#x27;+cls+&#x27;&quot;&gt;&lt;div class=&quot;k&quot; title=&quot;&#x27;+lab+(pc?&quot; (&quot;+pc+&quot;)&quot;:&quot;&quot;)+&#x27;&quot;&gt;&#x27;+lab+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+val+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;;
+    });
+    var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
+    var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
+    if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
   function rows(bd, p){
@@ -1231,6 +1314,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     } else {
       $(&quot;tSim&quot;).innerHTML = &#x27;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;note&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&#x27;;
     }
+    simChips();
 
     [&quot;classico&quot;,&quot;premium&quot;].forEach(function(t){
       var pp = Object.assign({}, p, {tipo:t}), mp = minPrice(pp);
@@ -1413,6 +1497,15 @@ button{font:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px
 button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel)}
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
+.simh{display:none}
+.simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
+.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
+.simh .chip.tot{background:var(--profit-soft);border-color:transparent}
+.simh .chip.tot .v{color:var(--profit)}
+.simh .chip.neg .v{color:var(--warn)}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
 .env{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 16px;background:var(--field)}
@@ -1451,6 +1544,22 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
   main &gt; details{grid-column:2;grid-row:6}
   .tables th,.tables td{padding:5px 4px}
+  /* régua compacta */
+  .ruler{padding:14px 18px}
+  .ruler h2{font-size:14px;margin:0 0 4px}
+  .ruler .inner{padding:24px 0 26px}
+  .ruler .bar{min-height:44px}
+  .ruler .seg{padding:5px 8px;font-size:10.5px;line-height:1.2}
+  .ruler .seg b{font-size:11.5px}
+  .marker i{font-size:11px;padding:1px 6px}
+  .ruler .legend{font-size:11px;margin-top:0}
+  /* simulador em faixa */
+  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
+  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim) .sim .field{margin:0}
+  .panel:has(#tSim) .scroll{display:none}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
@@ -1553,6 +1662,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
+        &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -1679,6 +1789,21 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var maxB = bands[bandOf(target)].max, g = 0;
     while(toPago(real) &gt; maxB + 1e-9 &amp;&amp; g&lt;5){ full = r2(full-0.01); real = d&gt;0 ? r2(full*(1-d)) : full; g++; }
     return {full:full, anun:real, pago:toPago(real), semAjuste:toPago(target), tipo:t, c:c};
+  }
+
+  function simChips(){
+    var box=document.getElementById(&quot;simH&quot;); if(!box) return;
+    var trs=document.querySelectorAll(&quot;#tSim tbody tr&quot;), h=&quot;&quot;;
+    trs.forEach(function(tr){
+      var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+      var lab=td[0].textContent, val=td[2].textContent, pc=td[1].textContent.trim();
+      var cls = tr.classList.contains(&quot;total&quot;) ? &quot; tot&quot;+(tr.classList.contains(&quot;neg&quot;)?&quot; neg&quot;:&quot;&quot;) : &quot;&quot;;
+      h+=&#x27;&lt;div class=&quot;chip&#x27;+cls+&#x27;&quot;&gt;&lt;div class=&quot;k&quot; title=&quot;&#x27;+lab+(pc?&quot; (&quot;+pc+&quot;)&quot;:&quot;&quot;)+&#x27;&quot;&gt;&#x27;+lab+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+val+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;;
+    });
+    var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
+    var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
+    if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
   function rows(bd, p){
@@ -1818,6 +1943,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     } else {
       $(&quot;tSim&quot;).innerHTML = &#x27;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;note&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&#x27;;
     }
+    simChips();
 
     $(&quot;alerts&quot;).innerHTML = alerts.map(function(a){ return &#x27;&lt;div class=&quot;alert&#x27;+(a[1]?&#x27; ok&#x27;:&#x27;&#x27;)+&#x27;&quot;&gt;&#x27;+a[0]+&#x27;&lt;/div&gt;&#x27;; }).join(&quot;&quot;);
   }
@@ -1985,6 +2111,15 @@ button{font:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px
 button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel)}
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
+.simh{display:none}
+.simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
+.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
+.simh .chip.tot{background:var(--profit-soft);border-color:transparent}
+.simh .chip.tot .v{color:var(--profit)}
+.simh .chip.neg .v{color:var(--warn)}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
 .env{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 16px;background:var(--field)}
@@ -2023,6 +2158,22 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
   main &gt; details{grid-column:2;grid-row:6}
   .tables th,.tables td{padding:5px 4px}
+  /* régua compacta */
+  .ruler{padding:14px 18px}
+  .ruler h2{font-size:14px;margin:0 0 4px}
+  .ruler .inner{padding:24px 0 26px}
+  .ruler .bar{min-height:44px}
+  .ruler .seg{padding:5px 8px;font-size:10.5px;line-height:1.2}
+  .ruler .seg b{font-size:11.5px}
+  .marker i{font-size:11px;padding:1px 6px}
+  .ruler .legend{font-size:11px;margin-top:0}
+  /* simulador em faixa */
+  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
+  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim) .sim .field{margin:0}
+  .panel:has(#tSim) .scroll{display:none}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
@@ -2125,6 +2276,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
+        &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -2244,6 +2396,21 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var maxB = bands[bandOf(target)].max, g = 0;
     while(toPago(real) &gt; maxB + 1e-9 &amp;&amp; g&lt;5){ full = r2(full-0.01); real = d&gt;0 ? r2(full*(1-d)) : full; g++; }
     return {full:full, anun:real, pago:toPago(real), semAjuste:toPago(target), tipo:t, c:c};
+  }
+
+  function simChips(){
+    var box=document.getElementById(&quot;simH&quot;); if(!box) return;
+    var trs=document.querySelectorAll(&quot;#tSim tbody tr&quot;), h=&quot;&quot;;
+    trs.forEach(function(tr){
+      var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+      var lab=td[0].textContent, val=td[2].textContent, pc=td[1].textContent.trim();
+      var cls = tr.classList.contains(&quot;total&quot;) ? &quot; tot&quot;+(tr.classList.contains(&quot;neg&quot;)?&quot; neg&quot;:&quot;&quot;) : &quot;&quot;;
+      h+=&#x27;&lt;div class=&quot;chip&#x27;+cls+&#x27;&quot;&gt;&lt;div class=&quot;k&quot; title=&quot;&#x27;+lab+(pc?&quot; (&quot;+pc+&quot;)&quot;:&quot;&quot;)+&#x27;&quot;&gt;&#x27;+lab+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+val+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;;
+    });
+    var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
+    var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
+    if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
   function rows(bd, p){
@@ -2385,6 +2552,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     } else {
       $(&quot;tSim&quot;).innerHTML = &#x27;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;note&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&#x27;;
     }
+    simChips();
 
     $(&quot;alerts&quot;).innerHTML = alerts.map(function(a){ return &#x27;&lt;div class=&quot;alert&#x27;+(a[1]?&#x27; ok&#x27;:&#x27;&#x27;)+&#x27;&quot;&gt;&#x27;+a[0]+&#x27;&lt;/div&gt;&#x27;; }).join(&quot;&quot;);
   }
@@ -2551,6 +2719,15 @@ button{font:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px
 button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel)}
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
+.simh{display:none}
+.simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
+.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
+.simh .chip.tot{background:var(--profit-soft);border-color:transparent}
+.simh .chip.tot .v{color:var(--profit)}
+.simh .chip.neg .v{color:var(--warn)}
+.simh .empty{color:var(--muted);font-size:13px;align-self:center}
+
 .inp.cup select{flex:0 0 auto;width:70px;padding:9px 6px 9px 10px;border-right:1px solid var(--line);color:var(--plum);font-weight:800}
 
 .env{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 16px;background:var(--field)}
@@ -2589,6 +2766,22 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
   main &gt; details{grid-column:2;grid-row:6}
   .tables th,.tables td{padding:5px 4px}
+  /* régua compacta */
+  .ruler{padding:14px 18px}
+  .ruler h2{font-size:14px;margin:0 0 4px}
+  .ruler .inner{padding:24px 0 26px}
+  .ruler .bar{min-height:44px}
+  .ruler .seg{padding:5px 8px;font-size:10.5px;line-height:1.2}
+  .ruler .seg b{font-size:11.5px}
+  .marker i{font-size:11px;padding:1px 6px}
+  .ruler .legend{font-size:11px;margin-top:0}
+  /* simulador em faixa */
+  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
+  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim) .sim .field{margin:0}
+  .panel:has(#tSim) .scroll{display:none}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
@@ -2691,6 +2884,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
+        &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -2811,6 +3005,21 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     var maxB = bands[bandOf(target)].max, g = 0;
     while(toPago(real) &gt; maxB + 1e-9 &amp;&amp; g&lt;5){ full = r2(full-0.01); real = d&gt;0 ? r2(full*(1-d)) : full; g++; }
     return {full:full, anun:real, pago:toPago(real), semAjuste:toPago(target), tipo:t, c:c};
+  }
+
+  function simChips(){
+    var box=document.getElementById(&quot;simH&quot;); if(!box) return;
+    var trs=document.querySelectorAll(&quot;#tSim tbody tr&quot;), h=&quot;&quot;;
+    trs.forEach(function(tr){
+      var td=tr.querySelectorAll(&quot;td&quot;); if(td.length&lt;3) return;
+      var lab=td[0].textContent, val=td[2].textContent, pc=td[1].textContent.trim();
+      var cls = tr.classList.contains(&quot;total&quot;) ? &quot; tot&quot;+(tr.classList.contains(&quot;neg&quot;)?&quot; neg&quot;:&quot;&quot;) : &quot;&quot;;
+      h+=&#x27;&lt;div class=&quot;chip&#x27;+cls+&#x27;&quot;&gt;&lt;div class=&quot;k&quot; title=&quot;&#x27;+lab+(pc?&quot; (&quot;+pc+&quot;)&quot;:&quot;&quot;)+&#x27;&quot;&gt;&#x27;+lab+&#x27;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+val+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;;
+    });
+    var note=document.querySelector(&quot;#tSim td.note:not([colspan])&quot;);
+    var mc=[].slice.call(document.querySelectorAll(&quot;#tSim tr&quot;)).filter(function(tr){return /Margem sobre o custo/.test(tr.textContent);})[0];
+    if(mc){ var c=mc.querySelectorAll(&quot;td&quot;); h+=&#x27;&lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;k&quot;&gt;Margem sobre o custo&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&#x27;+c[c.length-1].textContent+&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;; }
+    box.innerHTML = h || &#x27;&lt;div class=&quot;empty&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/div&gt;&#x27;;
   }
 
   function rows(bd, p){
@@ -2953,6 +3162,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     } else {
       $(&quot;tSim&quot;).innerHTML = &#x27;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;note&quot;&gt;Digite um preço para ver a composição e o lucro nele.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&#x27;;
     }
+    simChips();
 
     $(&quot;alerts&quot;).innerHTML = alerts.map(function(a){ return &#x27;&lt;div class=&quot;alert&#x27;+(a[1]?&#x27; ok&#x27;:&#x27;&#x27;)+&#x27;&quot;&gt;&#x27;+a[0]+&#x27;&lt;/div&gt;&#x27;; }).join(&quot;&quot;);
   }
