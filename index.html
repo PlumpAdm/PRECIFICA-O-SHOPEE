@@ -6,38 +6,125 @@
 <title>Precificação Marketplaces</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F5F3F7;--panel:#FFFFFF;--ink:#241B2C;--muted:#6E6478;--line:#E3DDE8;--plum:#6A2C68;--plum-soft:#F1E6F0}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17121B;--panel:#211A26;--ink:#F1EBF4;--muted:#A99CB2;--line:#382D3F;--plum:#D59BD2;--plum-soft:#3A2440}}
-:root[data-theme="dark"]{--bg:#17121B;--panel:#211A26;--ink:#F1EBF4;--muted:#A99CB2;--line:#382D3F;--plum:#D59BD2;--plum-soft:#3A2440}
+:root{--bg:#F5F3F7;--panel:#FFFFFF;--ink:#241B2C;--muted:#6E6478;--line:#E3DDE8;--plum:#6A2C68;--plum-soft:#F1E6F0;--field:#FBFAFC;--profit:#1C7A57;--profit-soft:#E3F2EB;--warn:#A6461F;--warn-soft:#FBEDE5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17121B;--panel:#211A26;--ink:#F1EBF4;--muted:#A99CB2;--line:#382D3F;--plum:#D59BD2;--plum-soft:#3A2440;--field:#1B1520;--profit:#6BD3A5;--profit-soft:#173328;--warn:#F0A07C;--warn-soft:#3C2219}}
+:root[data-theme="dark"]{--bg:#17121B;--panel:#211A26;--ink:#F1EBF4;--muted:#A99CB2;--line:#382D3F;--plum:#D59BD2;--plum-soft:#3A2440;--field:#1B1520;--profit:#6BD3A5;--profit-soft:#173328;--warn:#F0A07C;--warn-soft:#3C2219}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Manrope",system-ui,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Manrope",system-ui,sans-serif;font-variant-numeric:tabular-nums}
 .top{max-width:1180px;margin:0 auto;padding:28px 20px 0}
 h1{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:0 0 4px}
 .sub{margin:0 0 18px;color:var(--muted);font-size:14px}
-.tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:var(--panel);width:max-content;max-width:100%;overflow-x:auto}
-.tabs button{font:inherit;font-weight:700;font-size:14px;border:0;background:transparent;color:var(--muted);padding:9px 18px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.bar{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
+.prod{flex:1;min-width:260px}
+.prod label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+.inp{display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;background:var(--field);overflow:hidden}
+.inp:focus-within{border-color:var(--plum);box-shadow:0 0 0 3px var(--plum-soft)}
+.inp span{padding:0 10px;color:var(--muted);font-size:13px;font-weight:600}
+.inp input,.inp select,.inp textarea{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-weight:600;padding:10px 12px;outline:none}
+.hint{font-size:12px;color:var(--muted);margin-top:4px;min-height:16px}
+.hint b{color:var(--ink)}
+button{font:inherit;font-weight:700;font-size:14px;border-radius:9px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:var(--panel);width:max-content;max-width:100%}
+.tabs button{border:0;background:transparent;color:var(--muted);padding:9px 16px;border-radius:9px;white-space:nowrap}
 .tabs button[aria-selected="true"]{background:var(--plum);color:var(--panel)}
-.tabs button:focus-visible{outline:3px solid var(--plum-soft)}
-.sync{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin-top:12px;margin-bottom:4px;cursor:pointer;width:max-content}
+.tabs .sep{width:1px;background:var(--line);margin:6px 4px}
+.row2{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:12px}
+.sync{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);cursor:pointer}
 .sync input{accent-color:var(--plum);width:16px;height:16px}
 iframe{display:none;width:100%;border:0;min-height:600px;background:var(--bg)}
 iframe.on{display:block}
+
+/* banco */
+#banco{display:none;max-width:1180px;margin:0 auto;padding:16px 20px 48px}
+#banco.on{display:block}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.panel h2{font-size:16px;font-weight:700;margin:0 0 4px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.tools .inp{min-width:220px;flex:1}
+.tools select{min-width:170px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--muted);font-weight:700;background:var(--field);position:sticky;top:0}
+td.n,th.n{text-align:right}
+td.mot{white-space:normal;min-width:160px;max-width:280px}
+tbody tr:last-child td{border-bottom:0}
+.empty{padding:28px;text-align:center;color:var(--muted);font-size:14px}
+.cfg{border:1px dashed var(--line);border-radius:10px;padding:14px;margin-top:14px;background:var(--field)}
+.lock{border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px;background:var(--field);display:none}
+.lock.on{display:block}
+.lock p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.lock .r{display:flex;gap:10px;flex-wrap:wrap}
+.lock .inp{flex:1;min-width:220px}
+.cfg p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.cfg .r{display:flex;gap:10px;flex-wrap:wrap}
+.cfg .inp{flex:1;min-width:240px}
+.note{font-size:12px;color:var(--muted)}
+.msg{font-size:13px;padding:10px 12px;border-radius:9px;margin-top:12px;display:none}
+.msg.on{display:block}
+.msg.ok{background:var(--profit-soft);color:var(--ink);border-left:3px solid var(--profit)}
+.msg.err{background:var(--warn-soft);color:var(--ink);border-left:3px solid var(--warn)}
+
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(20,10,25,.5);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;z-index:20}
+.ov.on{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:620px;width:100%;padding:22px}
+.modal h2{margin:0 0 4px;font-size:18px}
+.sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 4px}
+@media (max-width:560px){.sum{grid-template-columns:1fr 1fr}}
+.sum > div{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.sum .k{font-size:11px;color:var(--muted);font-weight:600}
+.sum .v{font-size:14px;font-weight:800}
+.f{margin-top:14px}
+.f label.l{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--field)}
+.seg button{border:0;background:transparent;padding:8px;border-radius:7px;color:var(--muted);font-size:13px}
+.seg button.on{background:var(--plum);color:var(--panel)}
+.req{font-style:normal;font-weight:600;font-size:11px;color:var(--warn);margin-left:6px}
+.f span.l{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:8px 12px;font-size:13px;border-radius:999px;background:var(--field);color:var(--ink)}
+.chips button.on{background:var(--plum);border-color:var(--plum);color:var(--panel)}
+.three{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:12px}
+@media (max-width:560px){.three{grid-template-columns:1fr}}
+.acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 <div class="top">
   <h1>Precificação Marketplaces</h1>
   <p class="sub">Shopee, Mercado Livre, TikTok Shop, Temu e Shein com as taxas de cada plataforma calculadas automaticamente.</p>
+
+  <div class="bar">
+    <div class="prod">
+      <label for="prodIn">Produto (nome ou SKU)</label>
+      <div class="inp"><input id="prodIn" list="prodList" placeholder="Digite SKU, nome ou cód. fábrica e escolha na lista" autocomplete="off"></div>
+      <datalist id="prodList"></datalist>
+      <div class="hint" id="prodHint"></div>
+    </div>
+    <button type="button" class="primary" id="btnReg">Registrar simulação</button>
+  </div>
+
   <div class="tabs" role="tablist" aria-label="Marketplace">
     <button role="tab" data-t="shopee" aria-selected="true">Shopee</button>
     <button role="tab" data-t="ml" aria-selected="false">Mercado Livre</button>
     <button role="tab" data-t="tiktok" aria-selected="false">TikTok Shop</button>
     <button role="tab" data-t="temu" aria-selected="false">Temu</button>
     <button role="tab" data-t="shein" aria-selected="false">Shein</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button role="tab" data-t="banco" aria-selected="false">Banco de dados</button>
   </div>
-  <label class="sync"><input type="checkbox" id="sync" checked> Usar os mesmos dados (custo, margem, embalagem, comissões, desconto) em todas as abas</label>
+  <div class="row2" id="syncRow">
+    <label class="sync"><input type="checkbox" id="sync" checked> Usar os mesmos dados (custo, margem, embalagem, comissões, desconto) em todas as abas</label>
+  </div>
 </div>
-<iframe id="f-shopee" title="Precificação Shopee" class="on" srcdoc="&lt;!DOCTYPE html&gt;
+
+<iframe id="f-shopee" title="Precificação Shopee" class="" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;pt-BR&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
@@ -250,10 +337,10 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
         &lt;summary&gt;Tabela de taxas da Shopee (CNPJ)&lt;/summary&gt;
-        &lt;p class=&quot;note&quot; style=&quot;margin:12px 0&quot;&gt;Vigente desde março/2026. O frete grátis já está embutido na comissão e na taxa fixa. Se a Shopee mudar as taxas, edite aqui: todos os cálculos se atualizam e a tabela fica salva neste navegador.&lt;/p&gt;
+        &lt;p class=&quot;note&quot; style=&quot;margin:12px 0&quot;&gt;Vigente desde 01/10/2026 (taxa fixa até R$ 79,99 passou de R$ 4,00 para R$ 4,50). O frete grátis já está embutido na comissão e na taxa fixa. Se a Shopee mudar as taxas, edite aqui: todos os cálculos se atualizam e a tabela fica salva neste navegador.&lt;/p&gt;
         &lt;div class=&quot;scroll&quot;&gt;&lt;table class=&quot;tbl-edit&quot; id=&quot;tBands&quot;&gt;&lt;/table&gt;&lt;/div&gt;
         &lt;div class=&quot;row-actions&quot;&gt;
-          &lt;button type=&quot;button&quot; id=&quot;resetBands&quot;&gt;Restaurar tabela de março/2026&lt;/button&gt;
+          &lt;button type=&quot;button&quot; id=&quot;resetBands&quot;&gt;Restaurar tabela de outubro/2026&lt;/button&gt;
           &lt;span class=&quot;note&quot; id=&quot;bandsStatus&quot;&gt;&lt;/span&gt;
         &lt;/div&gt;
       &lt;/details&gt;
@@ -267,13 +354,13 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   var DEFAULT_INPUTS = {custo:&quot;34,56&quot;, margem:&quot;30&quot;, emb:&quot;1,00&quot;, vend:&quot;4&quot;, ads:&quot;10&quot;, nf:&quot;10&quot;, desc:&quot;30&quot;, arred:&quot;exato&quot;, simP:&quot;&quot;};
   // meia = taxa fixa é 50% do preço (itens abaixo de R$ 8)
   var DEFAULT_BANDS = [
-    {min:0,   max:7.99,   pct:20, fixo:0,  meia:true},
-    {min:8,   max:79.99,  pct:20, fixo:4,  meia:false},
+    {min:0,   max:8.99,   pct:20, fixo:0,  meia:true},
+    {min:9,   max:79.99,  pct:20, fixo:4.5, meia:false},
     {min:80,  max:99.99,  pct:14, fixo:16, meia:false},
     {min:100, max:199.99, pct:14, fixo:20, meia:false},
     {min:200, max:Infinity, pct:14, fixo:26, meia:false}
   ];
-  var LS_IN = &quot;shopeePricing.inputs.v1&quot;, LS_B = &quot;shopeePricing.bands.v1&quot;;
+  var LS_IN = &quot;shopeePricing.inputs.v1&quot;, LS_B = &quot;shopeePricing.bands.v2&quot;;
 
   function load(key, fallback){
     try{ var raw = localStorage.getItem(key); if(!raw) return fallback; return JSON.parse(raw); }catch(e){ return fallback; }
@@ -504,7 +591,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   $(&quot;resetBands&quot;).addEventListener(&quot;click&quot;, function(){
     bands = DEFAULT_BANDS.map(function(b){ return Object.assign({}, b); });
     try{ localStorage.removeItem(LS_B); }catch(e){}
-    $(&quot;bandsStatus&quot;).textContent = &quot;Tabela de março/2026 restaurada.&quot;;
+    $(&quot;bandsStatus&quot;).textContent = &quot;Tabela de outubro/2026 restaurada.&quot;;
     drawBandsTable(); render();
   });
 
@@ -2547,47 +2634,337 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
+
+<section id="banco" aria-label="Banco de dados">
+  <div class="panel">
+    <h2>Banco de dados de simulações</h2>
+    <div class="note">Somente leitura. Cada registro vem do botão "Registrar simulação" e fica salvo na Planilha Google.</div>
+    <div class="lock" id="lockBox">
+      <p>Digite a senha da equipe para ver o banco de dados. Ela fica salva neste navegador.</p>
+      <div class="r">
+        <div class="inp"><input id="lockPw" type="password" autocomplete="current-password" placeholder="Senha da equipe"></div>
+        <button type="button" class="primary" id="lockBtn">Entrar</button>
+      </div>
+    </div>
+    <div class="tools" id="bancoTools">
+      <div class="inp"><input id="fTxt" placeholder="Filtrar por SKU, produto, cód. fábrica ou motivo"></div>
+      <div class="inp" style="flex:0 0 240px;min-width:0"><select id="fMk" aria-label="Filtrar marketplace"><option value="">Todos os marketplaces</option></select></div>
+      <button type="button" id="btnLoad">Atualizar</button>
+      <button type="button" id="btnCsv">Exportar CSV</button>
+    </div>
+    <div class="scroll"><table id="tReg"></table></div>
+    <div class="note" id="regInfo" style="margin-top:8px"></div>
+    <div class="msg" id="bancoMsg"></div>
+    <details class="cfg" id="cfgBox">
+      <summary class="note" style="cursor:pointer;font-weight:700">Configuração da planilha</summary>
+      <p style="margin-top:10px">Cole a URL do App da Web do Apps Script (termina em <b>/exec</b>). Fica salva neste navegador.</p>
+      <div class="r">
+        <div class="inp"><input id="cfgUrl" placeholder="https://script.google.com/macros/s/.../exec"></div>
+        <button type="button" id="cfgSave">Salvar</button>
+      </div>
+      <p style="margin-top:12px">Senha da equipe salva neste navegador.</p>
+      <div class="r"><button type="button" id="logoutBtn">Esquecer senha neste navegador</button></div>
+    </details>
+  </div>
+</section>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal">
+    <h2 id="mTitle">Registrar simulação</h2>
+    <div class="note" id="mSub"></div>
+    <div class="sum" id="mSum"></div>
+    <div class="three">
+      <div class="f"><label class="l" for="mSku">SKU</label><div class="inp"><input id="mSku" maxlength="60"></div></div>
+      <div class="f"><label class="l" for="mProd">Produto</label><div class="inp"><input id="mProd" maxlength="160"></div></div>
+      <div class="f"><label class="l" for="mCod">Cód. fábrica</label><div class="inp"><input id="mCod" maxlength="60"></div></div>
+    </div>
+    <div class="f"><span class="l" id="motLbl">Motivo <em class="req">obrigatório</em></span>
+      <div class="chips" role="radiogroup" aria-labelledby="motLbl">
+        <button type="button" role="radio" data-m="Primeiro cadastro">Primeiro cadastro</button>
+        <button type="button" role="radio" data-m="Oferta relâmpago">Oferta relâmpago</button>
+        <button type="button" role="radio" data-m="Live">Live</button>
+        <button type="button" role="radio" data-m="ADS">ADS</button>
+        <button type="button" role="radio" data-m="Ajuste de preço">Ajuste de preço</button>
+        <button type="button" role="radio" data-m="Outro">Outro</button>
+      </div>
+      <div class="inp" id="motOutroBox" style="display:none;margin-top:8px"><input id="mMot" maxlength="200" placeholder="Descreva o motivo"></div>
+    </div>
+    <div class="two">
+      <div class="f"><label class="l">Divulgação</label>
+        <div class="seg" role="radiogroup" aria-label="Divulgação"><button type="button" data-d="ads" role="radio">ADS</button><button type="button" data-d="afil" role="radio">Afiliado</button></div>
+      </div>
+      <div class="f"><label class="l" for="mDiv">Percentual</label><div class="inp"><input id="mDiv" inputmode="decimal"><span>%</span></div></div>
+    </div>
+    <div class="f" id="mPwBox" style="display:none"><label class="l" for="mPw">Senha da equipe</label><div class="inp"><input id="mPw" type="password" autocomplete="current-password"></div><div class="hint">Pedida só na primeira vez neste navegador.</div></div>
+    <div class="f"><label class="l" for="mCup">Cupom</label><div class="inp"><span>R$</span><input id="mCup" inputmode="decimal" value="0,00"></div><div class="hint">Valor do cupom. Deixe 0,00 se não teve cupom.</div></div>
+    <div class="msg" id="mMsg"></div>
+    <div class="acts"><button type="button" id="mCancel">Cancelar</button><button type="button" class="primary" id="mSave">Registrar</button></div>
+  </div>
+</div>
+
 <script>
 (function(){
+  "use strict";
+  // URL do App da Web (Apps Script). Preenchida aqui vale para toda a equipe.
+  var PLANILHA_URL = "https://script.google.com/macros/s/AKfycbw_6gy5dZdEU58HPQs9rnIabtS837ykI8bjxhmw_ZQXHAPfKp0Pl2R0hpC2r3AIZgXTPg/exec";
+
+  // Cadastro padrão de produtos (usado até a aba Produtos da planilha ter itens)
+  var PRODUTOS_PADRAO = [{"sku": "02802", "cod": "PB77", "produto": "Camisa Fiorella", "custo": 32.78}, {"sku": "03116", "cod": "PV198*", "produto": "Vestido Melissa", "custo": 37.08}, {"sku": "03132", "cod": "PCJ83", "produto": "Conjunto Tassia", "custo": 50.68}, {"sku": "03146", "cod": "PCJ94", "produto": "Conjunto Lupita", "custo": 50.79}, {"sku": "03154", "cod": "PV201", "produto": "Vestido Pietra", "custo": 41.06}, {"sku": "03175", "cod": "PCJ100", "produto": "Conjunto Denim", "custo": 53.68}, {"sku": "03180", "cod": "PV231", "produto": "Vestido Alyssa", "custo": 34.63}, {"sku": "03193", "cod": "PCJ101", "produto": "Conjunto Felicia", "custo": 58.39}, {"sku": "03194", "cod": "PCJ102", "produto": "Conjunto Hera", "custo": 47.95}, {"sku": "04023", "cod": "PV98", "produto": "Vestido Cleia", "custo": 36.52}, {"sku": "03147", "cod": "PV215-LOTE OUTUBRO", "produto": "Vestido Verona", "custo": 41.23}, {"sku": "03254", "cod": "MCJ01", "produto": "Conjunto Elisa", "custo": 51.11}, {"sku": "03273", "cod": "MCJ02", "produto": "Conjunto Felipa", "custo": 39.59}, {"sku": "03255", "cod": "MV01", "produto": "Vestido Belly", "custo": 34.56}, {"sku": "03272", "cod": "MV02", "produto": "Vestido Vera", "custo": 38.11}];
+
   var KEYS=["custo","margem","emb","vend","ads","nf","desc","arred"];
-  var ids=["shopee","ml","tiktok","temu","shein"], LS="mkPricing.tab";
-  function fr(k){return document.getElementById("f-"+k);}
+  var ids=["shopee","ml","tiktok","temu","shein"];
+  var NOMES={shopee:"Shopee",ml:"Mercado Livre",tiktok:"TikTok Shop",temu:"Temu",shein:"Shein"};
+  var LS_TAB="mkPricing.tab", LS_URL="mkPricing.sheetUrl", LS_PROD="mkPricing.produtos", LS_KEY="mkPricing.key";
+  var $=function(id){return document.getElementById(id);};
+  function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+  function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+  function key(){ return lsGet(LS_KEY)||""; }
+  function lsDel(k){try{localStorage.removeItem(k);}catch(e){}}
+  // Todas as chamadas vão por POST com a senha no corpo (nunca na URL)
+  function api(action, extra, k){
+    var body=Object.assign({action:action, k:(k!==undefined?k:key())}, extra||{});
+    return fetch(url(),{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)})
+      .then(function(r){return r.json();});
+  }
+  function url(){ return (PLANILHA_URL && PLANILHA_URL.indexOf("{{")<0 ? PLANILHA_URL : "") || lsGet(LS_URL) || ""; }
+  function num(s){ if(typeof s==="number") return s; s=String(s==null?"":s).replace(/[^\d,.\-]/g,""); if(s.indexOf(",")>-1) s=s.replace(/\./g,"").replace(",","."); var n=parseFloat(s); return isFinite(n)?n:0; }
+  function brl(v){ return (+v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); }
+  function pctf(v){ return (+v||0).toLocaleString("pt-BR",{maximumFractionDigits:2})+"%"; }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function fr(k){return $("f-"+k);}
   function doc(k){try{return fr(k).contentDocument;}catch(e){return null;}}
   function fit(k){var d=doc(k); if(d&&d.body){fr(k).style.height=d.documentElement.scrollHeight+"px";}}
+  var cur="shopee";
+
   function show(k){
+    cur=k;
     ids.forEach(function(x){fr(x).classList.toggle("on",x===k);});
+    $("banco").classList.toggle("on",k==="banco");
+    $("syncRow").style.display = k==="banco" ? "none" : "";
+    $("btnReg").disabled = k==="banco";
     document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===k);});
-    try{localStorage.setItem(LS,k);}catch(e){}
-    setTimeout(function(){fit(k);},30);
+    lsSet(LS_TAB,k);
+    if(k==="banco") loadReg(); else setTimeout(function(){fit(k);},30);
   }
   document.querySelectorAll(".tabs button").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.t);});});
+
+  // sincronização entre abas
   var busy=false;
   function push(src,key,val){
-    if(busy||!document.getElementById("sync").checked) return;
+    if(busy||!$("sync").checked) return;
     busy=true;
     ids.forEach(function(k){
       if(k===src) return; var d=doc(k); if(!d) return;
       var el=d.querySelector('[data-key="'+key+'"]'); if(!el||el.value===val) return;
-      el.value=val; el.dispatchEvent(new Event(el.tagName==="SELECT"?"change":"input",{bubbles:true}));
-      if(el.tagName==="SELECT") el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.value=val; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true}));
     });
     busy=false;
+  }
+  function setField(k,key,val){
+    var d=doc(k); if(!d) return; var el=d.querySelector('[data-key="'+key+'"]'); if(!el) return;
+    el.value=val; el.dispatchEvent(new Event("input",{bubbles:true}));
   }
   ids.forEach(function(k){
     fr(k).addEventListener("load",function(){
       var d=doc(k); if(!d) return;
       KEYS.forEach(function(key){
         var el=d.querySelector('[data-key="'+key+'"]'); if(!el) return;
-        ["input","change"].forEach(function(ev){el.addEventListener(ev,function(){push(k,key,el.value);});});
+        ["input","change"].forEach(function(ev){el.addEventListener(ev,function(){push(k,key,el.value); if(key==="custo") checkProd();});});
       });
       try{new (fr(k).contentWindow.ResizeObserver)(function(){fit(k);}).observe(d.body);}catch(e){}
       d.addEventListener("click",function(){setTimeout(function(){fit(k);},30);});
       fit(k);
     });
   });
-  var start="shopee"; try{start=localStorage.getItem(LS)||"shopee";}catch(e){}
-  if(ids.indexOf(start)<0) start="shopee";
-  show(start);
+
+  // ---------- produtos ----------
+  var produtos=[]; var sel=null;
+  try{ produtos = JSON.parse(lsGet(LS_PROD)||"[]") || []; }catch(e){ produtos=[]; }
+  if(!produtos.length) produtos = PRODUTOS_PADRAO.slice();
+  function label(p){ return (p.sku?p.sku+" — ":"")+p.produto+(p.cod?" - "+p.cod:""); }
+  function drawProd(){
+    $("prodList").innerHTML = produtos.map(function(p){ return '<option value="'+esc(label(p))+'">'; }).join("");
+    if(!produtos.length) $("prodHint").textContent = "Nenhum produto na aba Produtos da planilha. Você ainda pode digitar o custo manualmente.";
+    else if(!sel) $("prodHint").textContent = produtos.length+" produtos disponíveis.";
+  }
+  function loadProd(){
+    var u=url(); drawProd(); if(!u||!key()) return;
+    api("produtos").then(function(j){
+      if(j&&j.ok&&j.rows&&j.rows.length){ produtos=j.rows; lsSet(LS_PROD,JSON.stringify(produtos)); }
+      drawProd();
+    }).catch(function(){ if(!produtos.length) $("prodHint").textContent="Não foi possível carregar os produtos da planilha."; });
+  }
+  function pick(){
+    var v=$("prodIn").value.trim(); if(!v){ sel=null; drawProd(); return; }
+    var p=produtos.filter(function(x){return label(x)===v;})[0] ||
+          produtos.filter(function(x){var t=v.toLowerCase(); return (x.sku&&x.sku.toLowerCase()===t)||(x.cod&&x.cod.toLowerCase()===t);})[0];
+    if(!p){ sel=null; $("prodHint").textContent="Escolha um produto da lista."; return; }
+    sel=p; $("prodIn").value=label(p);
+    var c=p.custo.toFixed(2).replace(".",",");
+    var target = cur==="banco" ? "shopee" : cur;
+    setField(target,"custo",c);
+    if(!$("sync").checked) ids.forEach(function(k){ if(k!==target) setField(k,"custo",c); });
+    $("prodHint").innerHTML = "Custo carregado: <b>"+brl(p.custo)+"</b>";
+  }
+  function checkProd(){
+    if(!sel) return; var d=doc(cur==="banco"?"shopee":cur); if(!d) return;
+    var c=num(d.getElementById("custo").value);
+    if(Math.abs(c-sel.custo)>0.004) $("prodHint").innerHTML = "Custo alterado manualmente: <b>"+brl(c)+"</b> (cadastro: "+brl(sel.custo)+")";
+    else $("prodHint").innerHTML = "Custo carregado: <b>"+brl(sel.custo)+"</b>";
+  }
+  $("prodIn").addEventListener("change",pick);
+  $("prodIn").addEventListener("input",function(){ var v=$("prodIn").value; if(produtos.some(function(p){return label(p)===v;})) pick(); });
+
+  // ---------- registro ----------
+  var snap=null, divMode="ads";
+  function lucroDe(d){ var t=d.querySelector("#tPromo tr.total td:last-child"); return t?num(t.textContent.replace(/[^\d,.\-]/g,"")):0; }
+  function takeSnap(){
+    var k=cur, d=doc(k); if(!d) return null;
+    var g=function(id){var e=d.getElementById(id); return e?e.value:"";};
+    var mk=NOMES[k];
+    if(k==="ml"){ var t=d.querySelector(".seg-tog button.on"); if(t) mk+=" ("+t.textContent.trim()+")"; }
+    var promo=num(d.getElementById("promoV").textContent), cheio=num(d.getElementById("fullV").textContent);
+    return {marketplace:mk, custo:num(g("custo")), markup:num(g("margem")), ads:num(g("ads")), afiliado:num(g("afil")),
+            nf:num(g("nf")), precoPromo:promo, precoCheio:cheio, lucro:lucroDe(d)};
+  }
+  function setDiv(m){
+    divMode=m;
+    document.querySelectorAll(".seg button").forEach(function(b){var on=b.dataset.d===m; b.classList.toggle("on",on); b.setAttribute("aria-checked",on);});
+    var v = m==="ads" ? snap.ads : (snap.afiliado || snap.ads);
+    $("mDiv").value = String(v).replace(".",",");
+  }
+  document.querySelectorAll(".seg button").forEach(function(b){b.addEventListener("click",function(){setDiv(b.dataset.d);});});
+  var motSel="";
+  function setMot(m){
+    motSel=m;
+    document.querySelectorAll(".chips button").forEach(function(b){var on=b.dataset.m===m; b.classList.toggle("on",on); b.setAttribute("aria-checked",on);});
+    $("motOutroBox").style.display = m==="Outro" ? "" : "none";
+    if(m==="Outro") setTimeout(function(){$("mMot").focus();},10);
+  }
+  document.querySelectorAll(".chips button").forEach(function(b){b.addEventListener("click",function(){setMot(b.dataset.m);});});
+  function msg(el,txt,ok){ el.textContent=txt; el.className="msg on "+(ok?"ok":"err"); }
+  function openReg(){
+    snap=takeSnap(); if(!snap) return;
+    if(!(snap.custo>0)){ alertBox("Informe o custo do produto antes de registrar."); return; }
+    $("mSub").textContent = "Marketplace: "+snap.marketplace;
+    $("mSum").innerHTML = [["Custo",brl(snap.custo)],["Markup",pctf(snap.markup)],["Nota fiscal",pctf(snap.nf)],
+      ["Preço promocional",brl(snap.precoPromo)],["Preço cheio",brl(snap.precoCheio)],["Lucro",brl(snap.lucro)]]
+      .map(function(x){return '<div><div class="k">'+x[0]+'</div><div class="v">'+x[1]+'</div></div>';}).join("");
+    $("mSku").value = sel ? sel.sku : ""; $("mProd").value = sel ? sel.produto : ""; $("mCod").value = sel ? (sel.cod||"") : "";
+    $("mMot").value=""; setMot(""); $("mPwBox").style.display = key() ? "none" : ""; $("mPw").value=""; $("mCup").value="0,00"; $("mMsg").className="msg";
+    setDiv(snap.ads===0 && snap.afiliado>0 ? "afil" : "ads");
+    $("mSave").disabled=false;
+    $("ov").classList.add("on"); setTimeout(function(){ if(!$("mSku").value) $("mSku").focus(); },30);
+  }
+  function alertBox(t){ $("prodHint").textContent=t; $("prodIn").focus(); }
+  function closeReg(){ $("ov").classList.remove("on"); }
+  $("btnReg").addEventListener("click",openReg);
+  $("mCancel").addEventListener("click",closeReg);
+  $("ov").addEventListener("click",function(e){ if(e.target===$("ov")) closeReg(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape" && $("ov").classList.contains("on")) closeReg(); });
+
+  $("mSave").addEventListener("click",function(){
+    var u=url();
+    var sku=$("mSku").value.trim(), mot = motSel==="Outro" ? $("mMot").value.trim() : motSel;
+    if(!u){ msg($("mMsg"),"Configure a URL da planilha na aba Banco de dados antes de registrar.",false); return; }
+    if(!sku){ msg($("mMsg"),"Informe o SKU.",false); $("mSku").focus(); return; }
+    if(!motSel){ msg($("mMsg"),"Escolha o motivo da precificação.",false); return; }
+    if(!mot){ msg($("mMsg"),"Descreva o motivo no campo Outro.",false); $("mMot").focus(); return; }
+    if(motSel==="Outro") mot="Outro: "+mot;
+    var k=key() || $("mPw").value;
+    if(!k){ msg($("mMsg"),"Digite a senha da equipe.",false); $("mPw").focus(); return; }
+    var dv=num($("mDiv").value);
+    var row={sku:sku, motivo:mot, custo:snap.custo, markup:snap.markup,
+      ads: divMode==="ads"?dv:0, afiliado: divMode==="afil"?dv:0, nf:snap.nf, cupom:num($("mCup").value),
+      produto:$("mProd").value.trim(), codFabrica:$("mCod").value.trim(), marketplace:snap.marketplace, precoPromo:snap.precoPromo, precoCheio:snap.precoCheio, lucro:snap.lucro};
+    $("mSave").disabled=true; msg($("mMsg"),"Registrando...",true);
+    api("registrar",{dados:row},k).then(function(j){
+      if(j && j.auth===false){ lsDel(LS_KEY); $("mPwBox").style.display=""; $("mPw").value=""; $("mSave").disabled=false; msg($("mMsg"),"Senha incorreta.",false); $("mPw").focus(); return; }
+      if(j && j.ok){ if(!key()){ lsSet(LS_KEY,k); loadProd(); } msg($("mMsg"),"Registrado com sucesso.",true); regCache=null; setTimeout(closeReg,900); }
+      else { $("mSave").disabled=false; msg($("mMsg"),"Não foi possível registrar: "+((j&&j.erro)||"erro desconhecido"),false); }
+    }).catch(function(){ $("mSave").disabled=false; msg($("mMsg"),"Falha de conexão com a planilha. Tente de novo.",false); });
+  });
+
+  // ---------- banco (leitura) ----------
+  var COLS=[["sku","SKU",""],["motivo","Motivo","mot"],["custo","Custo (R$)","brl"],["markup","Markup (%)","pct"],["ads","ADS (%)","pct"],
+    ["afiliado","Afiliado (%)","pct"],["nf","Nota fiscal (%)","pct"],["cupom","Cupom (R$)","brl"],["produto","Produto",""],["codFabrica","Cód. fábrica",""],
+    ["marketplace","Marketplace",""],["precoPromo","Preço promocional (R$)","brl"],["precoCheio","Preço cheio (R$)","brl"],["lucro","Lucro (R$)","brl"],["dataHora","Data/hora",""]];
+  var regCache=null;
+  function filtered(){
+    var t=$("fTxt").value.trim().toLowerCase(), m=$("fMk").value;
+    return (regCache||[]).filter(function(r){
+      if(m && r.marketplace!==m) return false;
+      if(!t) return true;
+      return [r.sku,r.produto,r.codFabrica,r.motivo].join(" ").toLowerCase().indexOf(t)>-1;
+    });
+  }
+  function drawReg(){
+    var rows=filtered();
+    var h='<thead><tr>'+COLS.map(function(c){return '<th class="'+(c[2]==="brl"||c[2]==="pct"?"n":"")+'">'+c[1]+'</th>';}).join("")+'</tr></thead><tbody>';
+    if(!rows.length) h+='<tr><td class="empty" colspan="'+COLS.length+'">'+(regCache&&regCache.length?"Nenhum registro com esse filtro.":"Nenhum registro ainda.")+'</td></tr>';
+    rows.forEach(function(r){
+      h+='<tr>'+COLS.map(function(c){
+        var v=r[c[0]], f=c[2];
+        if(f==="brl") return '<td class="n">'+brl(v)+'</td>';
+        if(f==="pct") return '<td class="n">'+pctf(v)+'</td>';
+        return '<td'+(f==="mot"?' class="mot"':'')+'>'+esc(v)+'</td>';
+      }).join("")+'</tr>';
+    });
+    $("tReg").innerHTML=h+'</tbody>';
+    $("regInfo").textContent = regCache ? rows.length+" de "+regCache.length+" registros · mais recentes primeiro" : "";
+  }
+  function fillMk(){
+    var cur=$("fMk").value, set={};
+    (regCache||[]).forEach(function(r){ if(r.marketplace) set[r.marketplace]=1; });
+    $("fMk").innerHTML='<option value="">Todos os marketplaces</option>'+Object.keys(set).sort().map(function(m){return '<option'+(m===cur?' selected':'')+'>'+esc(m)+'</option>';}).join("");
+  }
+  function loadReg(force){
+    var u=url(); $("cfgUrl").value=u;
+    if(!u){ $("cfgBox").open=true; regCache=[]; drawReg(); msg($("bancoMsg"),"A planilha ainda não foi configurada. Cole a URL do App da Web abaixo.",false); return; }
+    var locked=!key();
+    $("lockBox").classList.toggle("on",locked); $("bancoTools").style.display=locked?"none":"";
+    if(locked){ regCache=null; $("tReg").innerHTML=""; $("regInfo").textContent=""; $("bancoMsg").className="msg"; return; }
+    if(regCache && !force){ drawReg(); return; }
+    $("regInfo").textContent="Carregando..."; $("bancoMsg").className="msg";
+    api("registros").then(function(j){
+      if(j && j.auth===false){ lsDel(LS_KEY); loadReg(true); msg($("bancoMsg"),"Senha incorreta ou alterada. Digite novamente.",false); return; }
+      if(!j||!j.ok) throw new Error((j&&j.erro)||"resposta inválida");
+      regCache=(j.rows||[]).slice().reverse(); fillMk(); drawReg();
+    }).catch(function(e){ regCache=null; $("tReg").innerHTML=""; $("regInfo").textContent=""; msg($("bancoMsg"),"Não foi possível ler a planilha ("+e.message+"). Confira a URL e se a implantação está como 'Qualquer pessoa'.",false); });
+  }
+  function tryLogin(){
+    var pw=$("lockPw").value; if(!pw) return;
+    $("lockBtn").disabled=true;
+    api("registros",{},pw).then(function(j){
+      $("lockBtn").disabled=false;
+      if(j && j.auth===false){ msg($("bancoMsg"),"Senha incorreta.",false); return; }
+      if(!j||!j.ok) throw new Error((j&&j.erro)||"resposta inválida");
+      lsSet(LS_KEY,pw); $("lockPw").value=""; regCache=(j.rows||[]).slice().reverse(); loadReg(); fillMk(); drawReg(); loadProd();
+    }).catch(function(e){ $("lockBtn").disabled=false; msg($("bancoMsg"),"Não foi possível conectar à planilha ("+e.message+").",false); });
+  }
+  $("lockBtn").addEventListener("click",tryLogin);
+  $("lockPw").addEventListener("keydown",function(e){ if(e.key==="Enter") tryLogin(); });
+  $("logoutBtn").addEventListener("click",function(){ lsDel(LS_KEY); regCache=null; loadReg(true); });
+  $("fTxt").addEventListener("input",drawReg);
+  $("fMk").addEventListener("change",drawReg);
+  $("btnLoad").addEventListener("click",function(){loadReg(true);});
+  $("btnCsv").addEventListener("click",function(){
+    var rows=filtered(); if(!rows.length) return;
+    var q=function(v){ v=String(v==null?"":v); return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+    var lines=[COLS.map(function(c){return q(c[1]);}).join(";")].concat(rows.map(function(r){
+      return COLS.map(function(c){ var v=r[c[0]]; return q(c[2]==="brl"||c[2]==="pct" ? (+v||0).toFixed(2).replace(".",",") : v); }).join(";");
+    }));
+    var blob=new Blob(["﻿"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="banco-precificacao.csv"; document.body.appendChild(a); a.click(); a.remove();
+  });
+  $("cfgSave").addEventListener("click",function(){
+    var v=$("cfgUrl").value.trim();
+    if(v && !/^https:\/\/script\.google(usercontent)?\.com\//.test(v)){ msg($("bancoMsg"),"A URL deve começar com https://script.google.com/",false); return; }
+    lsSet(LS_URL,v); regCache=null; loadReg(true); loadProd();
+  });
+
+  var start=lsGet(LS_TAB)||"shopee"; if(ids.indexOf(start)<0 && start!=="banco") start="shopee";
+  show(start); loadProd();
 })();
 </script>
 </body>
