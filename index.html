@@ -105,6 +105,9 @@ tbody tr:last-child td{border-bottom:0}
 .three{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:12px}
 @media (max-width:560px){.three{grid-template-columns:1fr}}
 .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.titlebar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.dbbtn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.dbbtn[aria-pressed="true"]{background:var(--plum);border-color:var(--plum);color:var(--panel)}
 .tlabel{display:none}
 @media (min-width:1400px){
   .head2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
@@ -121,8 +124,13 @@ tbody tr:last-child td{border-bottom:0}
 </head>
 <body>
 <div class="top">
-  <h1>Precificação Marketplaces</h1>
-  <p class="sub">Shopee, Mercado Livre, TikTok Shop, Temu e Shein com as taxas de cada plataforma calculadas automaticamente.</p>
+  <div class="titlebar">
+    <div>
+      <h1>Precificação Marketplaces</h1>
+      <p class="sub">Shopee, Mercado Livre, TikTok Shop, Temu e Shein com as taxas de cada plataforma calculadas automaticamente.</p>
+    </div>
+    <button type="button" class="dbbtn" data-t="banco" aria-pressed="false">&#9638; Banco de dados</button>
+  </div>
 
   <div class="head2">
   <div class="hl">
@@ -147,8 +155,6 @@ tbody tr:last-child td{border-bottom:0}
     <button role="tab" data-t="tiktok" aria-selected="false">TikTok Shop</button>
     <button role="tab" data-t="temu" aria-selected="false">Temu</button>
     <button role="tab" data-t="shein" aria-selected="false">Shein</button>
-    <span class="sep" aria-hidden="true"></span>
-    <button role="tab" data-t="banco" aria-selected="false">Banco de dados</button>
   </div>
   <div class="row2" id="syncRow">
     <label class="sync"><input type="checkbox" id="sync" checked> Usar os mesmos dados (custo, margem, embalagem, comissões, desconto) em todas as abas</label>
@@ -280,7 +286,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
-.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
@@ -310,14 +316,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .hero &gt; div{padding:14px 20px}
 }
 @media (min-width:1400px){
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;row-gap:16px;align-items:start}
-  main{display:contents}
-  main &gt; *{grid-column:1;min-width:0;margin-top:0 !important}
-  main &gt; .hero{order:-1}
-  aside.panel{grid-column:1}
-  main &gt; .tables{grid-column:2;grid-row:1 / span 4;grid-template-columns:1fr;gap:16px}
-  main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
-  main &gt; details{grid-column:2;grid-row:6}
+  .grid.split{grid-template-columns:1fr}
+  .grid.split main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
+  .colL,.colR{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .colL &gt; *,.colR &gt; *{margin-top:0 !important;min-width:0}
+  .colR &gt; .tables{grid-template-columns:1fr;gap:12px}
+  .colL .hero &gt; div{padding:12px 18px}
+  .colL .hero .k{font-size:12px}
+  .colL .hero .v{font-size:30px;margin:2px 0 4px}
+  aside.panel{padding:12px 16px}
+  aside.panel .field{margin:0 0 6px}
   .tables th,.tables td{padding:5px 4px}
   /* régua compacta */
   .ruler{padding:14px 18px}
@@ -333,16 +341,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
-  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
+  .simh .chip{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
 
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
 }
 @media (min-width:1700px){
-  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
-  main &gt; section.panel:not(.ruler){grid-row:3}
-  main &gt; details{grid-row:4}
+  .colR &gt; .tables{grid-template-columns:1fr 1fr}
   .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
@@ -456,6 +463,31 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 &lt;script&gt;
 (function(){
   &quot;use strict&quot;;
+  // desktop largo: agrupa em coluna esquerda (preços + dados) e direita (composições)
+  (function(){
+    var gridEl=document.querySelector(&quot;.grid&quot;); if(!gridEl) return;
+    var asideEl=gridEl.querySelector(&quot;aside&quot;), mainEl=gridEl.querySelector(&quot;main&quot;);
+    var orig=[].slice.call(mainEl.children);
+    var L=document.createElement(&quot;div&quot;); L.className=&quot;colL&quot;;
+    var R=document.createElement(&quot;div&quot;); R.className=&quot;colR&quot;;
+    var mq=window.matchMedia(&quot;(min-width:1400px)&quot;);
+    function q(s){ return mainEl.querySelector(s); }
+    function apply(){
+      if(mq.matches){
+        if(gridEl.classList.contains(&quot;split&quot;)) return;
+        [q(&quot;:scope &gt; .hero&quot;), asideEl, q(&quot;:scope &gt; .compare&quot;), q(&quot;:scope &gt; .ruler&quot;), q(&quot;:scope &gt; .alerts&quot;)].forEach(function(x){ if(x) L.appendChild(x); });
+        [q(&quot;:scope &gt; .tables&quot;), q(&quot;:scope &gt; section.panel:not(.ruler)&quot;), q(&quot;:scope &gt; details&quot;)].forEach(function(x){ if(x) R.appendChild(x); });
+        mainEl.appendChild(L); mainEl.appendChild(R); gridEl.classList.add(&quot;split&quot;);
+      } else {
+        if(!gridEl.classList.contains(&quot;split&quot;)) return;
+        gridEl.insertBefore(asideEl, mainEl);
+        orig.forEach(function(x){ mainEl.appendChild(x); });
+        L.remove(); R.remove(); gridEl.classList.remove(&quot;split&quot;);
+      }
+    }
+    if(mq.addEventListener) mq.addEventListener(&quot;change&quot;,apply); else mq.addListener(apply);
+    apply();
+  })();
   var DEFAULT_INPUTS = {custo:&quot;34,56&quot;, margem:&quot;30&quot;, emb:&quot;1,00&quot;, vend:&quot;4&quot;, ads:&quot;10&quot;, nf:&quot;10&quot;, afil:&quot;0&quot;, cupomTipo:&quot;rs&quot;, cupomVal:&quot;0&quot;, desc:&quot;30&quot;, arred:&quot;exato&quot;, simP:&quot;&quot;};
   // meia = taxa fixa é 50% do preço (itens abaixo de R$ 8)
   var DEFAULT_BANDS = [
@@ -878,7 +910,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
-.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
@@ -921,14 +953,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .hero &gt; div{padding:14px 20px}
 }
 @media (min-width:1400px){
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;row-gap:16px;align-items:start}
-  main{display:contents}
-  main &gt; *{grid-column:1;min-width:0;margin-top:0 !important}
-  main &gt; .hero{order:-1}
-  aside.panel{grid-column:1}
-  main &gt; .tables{grid-column:2;grid-row:1 / span 4;grid-template-columns:1fr;gap:16px}
-  main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
-  main &gt; details{grid-column:2;grid-row:6}
+  .grid.split{grid-template-columns:1fr}
+  .grid.split main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
+  .colL,.colR{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .colL &gt; *,.colR &gt; *{margin-top:0 !important;min-width:0}
+  .colR &gt; .tables{grid-template-columns:1fr;gap:12px}
+  .colL .hero &gt; div{padding:12px 18px}
+  .colL .hero .k{font-size:12px}
+  .colL .hero .v{font-size:30px;margin:2px 0 4px}
+  aside.panel{padding:12px 16px}
+  aside.panel .field{margin:0 0 6px}
   .tables th,.tables td{padding:5px 4px}
   /* régua compacta */
   .ruler{padding:14px 18px}
@@ -944,16 +978,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
-  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
+  .simh .chip{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
 
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
 }
 @media (min-width:1700px){
-  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
-  main &gt; section.panel:not(.ruler){grid-row:3}
-  main &gt; details{grid-row:4}
+  .colR &gt; .tables{grid-template-columns:1fr 1fr}
   .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
@@ -1081,6 +1114,31 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 &lt;script&gt;
 (function(){
   &quot;use strict&quot;;
+  // desktop largo: agrupa em coluna esquerda (preços + dados) e direita (composições)
+  (function(){
+    var gridEl=document.querySelector(&quot;.grid&quot;); if(!gridEl) return;
+    var asideEl=gridEl.querySelector(&quot;aside&quot;), mainEl=gridEl.querySelector(&quot;main&quot;);
+    var orig=[].slice.call(mainEl.children);
+    var L=document.createElement(&quot;div&quot;); L.className=&quot;colL&quot;;
+    var R=document.createElement(&quot;div&quot;); R.className=&quot;colR&quot;;
+    var mq=window.matchMedia(&quot;(min-width:1400px)&quot;);
+    function q(s){ return mainEl.querySelector(s); }
+    function apply(){
+      if(mq.matches){
+        if(gridEl.classList.contains(&quot;split&quot;)) return;
+        [q(&quot;:scope &gt; .hero&quot;), asideEl, q(&quot;:scope &gt; .compare&quot;), q(&quot;:scope &gt; .ruler&quot;), q(&quot;:scope &gt; .alerts&quot;)].forEach(function(x){ if(x) L.appendChild(x); });
+        [q(&quot;:scope &gt; .tables&quot;), q(&quot;:scope &gt; section.panel:not(.ruler)&quot;), q(&quot;:scope &gt; details&quot;)].forEach(function(x){ if(x) R.appendChild(x); });
+        mainEl.appendChild(L); mainEl.appendChild(R); gridEl.classList.add(&quot;split&quot;);
+      } else {
+        if(!gridEl.classList.contains(&quot;split&quot;)) return;
+        gridEl.insertBefore(asideEl, mainEl);
+        orig.forEach(function(x){ mainEl.appendChild(x); });
+        L.remove(); R.remove(); gridEl.classList.remove(&quot;split&quot;);
+      }
+    }
+    if(mq.addEventListener) mq.addEventListener(&quot;change&quot;,apply); else mq.addListener(apply);
+    apply();
+  })();
   var DEFAULT_INPUTS = {custo:&quot;34,56&quot;, margem:&quot;30&quot;, emb:&quot;1,00&quot;, vend:&quot;3&quot;, ads:&quot;10&quot;, nf:&quot;10&quot;, afil:&quot;0&quot;, cupomTipo:&quot;rs&quot;, cupomVal:&quot;0&quot;, desc:&quot;30&quot;, arred:&quot;exato&quot;, simP:&quot;&quot;, tipo:&quot;classico&quot;};
   var DEFAULT_FEES = {classico:14, premium:19};
   // meia = taxa fixa é 50% do preço (itens abaixo de R$ 8)
@@ -1529,7 +1587,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
-.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
@@ -1565,14 +1623,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .hero &gt; div{padding:14px 20px}
 }
 @media (min-width:1400px){
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;row-gap:16px;align-items:start}
-  main{display:contents}
-  main &gt; *{grid-column:1;min-width:0;margin-top:0 !important}
-  main &gt; .hero{order:-1}
-  aside.panel{grid-column:1}
-  main &gt; .tables{grid-column:2;grid-row:1 / span 4;grid-template-columns:1fr;gap:16px}
-  main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
-  main &gt; details{grid-column:2;grid-row:6}
+  .grid.split{grid-template-columns:1fr}
+  .grid.split main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
+  .colL,.colR{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .colL &gt; *,.colR &gt; *{margin-top:0 !important;min-width:0}
+  .colR &gt; .tables{grid-template-columns:1fr;gap:12px}
+  .colL .hero &gt; div{padding:12px 18px}
+  .colL .hero .k{font-size:12px}
+  .colL .hero .v{font-size:30px;margin:2px 0 4px}
+  aside.panel{padding:12px 16px}
+  aside.panel .field{margin:0 0 6px}
   .tables th,.tables td{padding:5px 4px}
   /* régua compacta */
   .ruler{padding:14px 18px}
@@ -1588,16 +1648,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
-  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
+  .simh .chip{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
 
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
 }
 @media (min-width:1700px){
-  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
-  main &gt; section.panel:not(.ruler){grid-row:3}
-  main &gt; details{grid-row:4}
+  .colR &gt; .tables{grid-template-columns:1fr 1fr}
   .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
@@ -1718,6 +1777,31 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 &lt;script&gt;
 (function(){
   &quot;use strict&quot;;
+  // desktop largo: agrupa em coluna esquerda (preços + dados) e direita (composições)
+  (function(){
+    var gridEl=document.querySelector(&quot;.grid&quot;); if(!gridEl) return;
+    var asideEl=gridEl.querySelector(&quot;aside&quot;), mainEl=gridEl.querySelector(&quot;main&quot;);
+    var orig=[].slice.call(mainEl.children);
+    var L=document.createElement(&quot;div&quot;); L.className=&quot;colL&quot;;
+    var R=document.createElement(&quot;div&quot;); R.className=&quot;colR&quot;;
+    var mq=window.matchMedia(&quot;(min-width:1400px)&quot;);
+    function q(s){ return mainEl.querySelector(s); }
+    function apply(){
+      if(mq.matches){
+        if(gridEl.classList.contains(&quot;split&quot;)) return;
+        [q(&quot;:scope &gt; .hero&quot;), asideEl, q(&quot;:scope &gt; .compare&quot;), q(&quot;:scope &gt; .ruler&quot;), q(&quot;:scope &gt; .alerts&quot;)].forEach(function(x){ if(x) L.appendChild(x); });
+        [q(&quot;:scope &gt; .tables&quot;), q(&quot;:scope &gt; section.panel:not(.ruler)&quot;), q(&quot;:scope &gt; details&quot;)].forEach(function(x){ if(x) R.appendChild(x); });
+        mainEl.appendChild(L); mainEl.appendChild(R); gridEl.classList.add(&quot;split&quot;);
+      } else {
+        if(!gridEl.classList.contains(&quot;split&quot;)) return;
+        gridEl.insertBefore(asideEl, mainEl);
+        orig.forEach(function(x){ mainEl.appendChild(x); });
+        L.remove(); R.remove(); gridEl.classList.remove(&quot;split&quot;);
+      }
+    }
+    if(mq.addEventListener) mq.addEventListener(&quot;change&quot;,apply); else mq.addListener(apply);
+    apply();
+  })();
   var DEFAULT_INPUTS = {custo:&quot;34,56&quot;, margem:&quot;30&quot;, emb:&quot;1,00&quot;, vend:&quot;3&quot;, ads:&quot;10&quot;, nf:&quot;10&quot;, afil:&quot;0&quot;, cupomTipo:&quot;rs&quot;, cupomVal:&quot;0&quot;, desc:&quot;30&quot;, arred:&quot;exato&quot;, simP:&quot;&quot;};
   var DEFAULT_ENV = {on:true, pct:6, teto:50};
   var DEFAULT_BANDS = [
@@ -2151,7 +2235,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
-.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
@@ -2187,14 +2271,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .hero &gt; div{padding:14px 20px}
 }
 @media (min-width:1400px){
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;row-gap:16px;align-items:start}
-  main{display:contents}
-  main &gt; *{grid-column:1;min-width:0;margin-top:0 !important}
-  main &gt; .hero{order:-1}
-  aside.panel{grid-column:1}
-  main &gt; .tables{grid-column:2;grid-row:1 / span 4;grid-template-columns:1fr;gap:16px}
-  main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
-  main &gt; details{grid-column:2;grid-row:6}
+  .grid.split{grid-template-columns:1fr}
+  .grid.split main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
+  .colL,.colR{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .colL &gt; *,.colR &gt; *{margin-top:0 !important;min-width:0}
+  .colR &gt; .tables{grid-template-columns:1fr;gap:12px}
+  .colL .hero &gt; div{padding:12px 18px}
+  .colL .hero .k{font-size:12px}
+  .colL .hero .v{font-size:30px;margin:2px 0 4px}
+  aside.panel{padding:12px 16px}
+  aside.panel .field{margin:0 0 6px}
   .tables th,.tables td{padding:5px 4px}
   /* régua compacta */
   .ruler{padding:14px 18px}
@@ -2210,16 +2296,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
-  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
+  .simh .chip{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
 
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
 }
 @media (min-width:1700px){
-  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
-  main &gt; section.panel:not(.ruler){grid-row:3}
-  main &gt; details{grid-row:4}
+  .colR &gt; .tables{grid-template-columns:1fr 1fr}
   .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
@@ -2339,6 +2424,31 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 &lt;script&gt;
 (function(){
   &quot;use strict&quot;;
+  // desktop largo: agrupa em coluna esquerda (preços + dados) e direita (composições)
+  (function(){
+    var gridEl=document.querySelector(&quot;.grid&quot;); if(!gridEl) return;
+    var asideEl=gridEl.querySelector(&quot;aside&quot;), mainEl=gridEl.querySelector(&quot;main&quot;);
+    var orig=[].slice.call(mainEl.children);
+    var L=document.createElement(&quot;div&quot;); L.className=&quot;colL&quot;;
+    var R=document.createElement(&quot;div&quot;); R.className=&quot;colR&quot;;
+    var mq=window.matchMedia(&quot;(min-width:1400px)&quot;);
+    function q(s){ return mainEl.querySelector(s); }
+    function apply(){
+      if(mq.matches){
+        if(gridEl.classList.contains(&quot;split&quot;)) return;
+        [q(&quot;:scope &gt; .hero&quot;), asideEl, q(&quot;:scope &gt; .compare&quot;), q(&quot;:scope &gt; .ruler&quot;), q(&quot;:scope &gt; .alerts&quot;)].forEach(function(x){ if(x) L.appendChild(x); });
+        [q(&quot;:scope &gt; .tables&quot;), q(&quot;:scope &gt; section.panel:not(.ruler)&quot;), q(&quot;:scope &gt; details&quot;)].forEach(function(x){ if(x) R.appendChild(x); });
+        mainEl.appendChild(L); mainEl.appendChild(R); gridEl.classList.add(&quot;split&quot;);
+      } else {
+        if(!gridEl.classList.contains(&quot;split&quot;)) return;
+        gridEl.insertBefore(asideEl, mainEl);
+        orig.forEach(function(x){ mainEl.appendChild(x); });
+        L.remove(); R.remove(); gridEl.classList.remove(&quot;split&quot;);
+      }
+    }
+    if(mq.addEventListener) mq.addEventListener(&quot;change&quot;,apply); else mq.addListener(apply);
+    apply();
+  })();
   var DEFAULT_INPUTS = {custo:&quot;34,56&quot;, margem:&quot;30&quot;, emb:&quot;1,00&quot;, vend:&quot;3&quot;, ads:&quot;10&quot;, nf:&quot;10&quot;, afil:&quot;0&quot;, cupomTipo:&quot;rs&quot;, cupomVal:&quot;0&quot;, desc:&quot;30&quot;, arred:&quot;exato&quot;, simP:&quot;&quot;};
   var DEFAULT_T = {isencao:true, frete:0};
   var DEFAULT_BANDS = [
@@ -2767,7 +2877,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
-.simh .chip .k{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
 .simh .chip.tot{background:var(--profit-soft);border-color:transparent}
 .simh .chip.tot .v{color:var(--profit)}
@@ -2803,14 +2913,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .hero &gt; div{padding:14px 20px}
 }
 @media (min-width:1400px){
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;row-gap:16px;align-items:start}
-  main{display:contents}
-  main &gt; *{grid-column:1;min-width:0;margin-top:0 !important}
-  main &gt; .hero{order:-1}
-  aside.panel{grid-column:1}
-  main &gt; .tables{grid-column:2;grid-row:1 / span 4;grid-template-columns:1fr;gap:16px}
-  main &gt; section.panel:not(.ruler){grid-column:2;grid-row:5}
-  main &gt; details{grid-column:2;grid-row:6}
+  .grid.split{grid-template-columns:1fr}
+  .grid.split main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:20px;align-items:start}
+  .colL,.colR{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .colL &gt; *,.colR &gt; *{margin-top:0 !important;min-width:0}
+  .colR &gt; .tables{grid-template-columns:1fr;gap:12px}
+  .colL .hero &gt; div{padding:12px 18px}
+  .colL .hero .k{font-size:12px}
+  .colL .hero .v{font-size:30px;margin:2px 0 4px}
+  aside.panel{padding:12px 16px}
+  aside.panel .field{margin:0 0 6px}
   .tables th,.tables td{padding:5px 4px}
   /* régua compacta */
   .ruler{padding:14px 18px}
@@ -2826,16 +2938,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
-  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;align-self:end}
+  .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
+  .simh .chip{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
 
   .tables .panel{padding:16px 20px}
   .alerts{margin-top:0}
   .alerts .alert{padding:8px 12px}
 }
 @media (min-width:1700px){
-  main &gt; .tables{grid-template-columns:1fr 1fr;grid-row:1 / span 2}
-  main &gt; section.panel:not(.ruler){grid-row:3}
-  main &gt; details{grid-row:4}
+  .colR &gt; .tables{grid-template-columns:1fr 1fr}
   .ruler .inner{min-width:0}
 }
 &lt;/style&gt;
@@ -2956,6 +3067,31 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 &lt;script&gt;
 (function(){
   &quot;use strict&quot;;
+  // desktop largo: agrupa em coluna esquerda (preços + dados) e direita (composições)
+  (function(){
+    var gridEl=document.querySelector(&quot;.grid&quot;); if(!gridEl) return;
+    var asideEl=gridEl.querySelector(&quot;aside&quot;), mainEl=gridEl.querySelector(&quot;main&quot;);
+    var orig=[].slice.call(mainEl.children);
+    var L=document.createElement(&quot;div&quot;); L.className=&quot;colL&quot;;
+    var R=document.createElement(&quot;div&quot;); R.className=&quot;colR&quot;;
+    var mq=window.matchMedia(&quot;(min-width:1400px)&quot;);
+    function q(s){ return mainEl.querySelector(s); }
+    function apply(){
+      if(mq.matches){
+        if(gridEl.classList.contains(&quot;split&quot;)) return;
+        [q(&quot;:scope &gt; .hero&quot;), asideEl, q(&quot;:scope &gt; .compare&quot;), q(&quot;:scope &gt; .ruler&quot;), q(&quot;:scope &gt; .alerts&quot;)].forEach(function(x){ if(x) L.appendChild(x); });
+        [q(&quot;:scope &gt; .tables&quot;), q(&quot;:scope &gt; section.panel:not(.ruler)&quot;), q(&quot;:scope &gt; details&quot;)].forEach(function(x){ if(x) R.appendChild(x); });
+        mainEl.appendChild(L); mainEl.appendChild(R); gridEl.classList.add(&quot;split&quot;);
+      } else {
+        if(!gridEl.classList.contains(&quot;split&quot;)) return;
+        gridEl.insertBefore(asideEl, mainEl);
+        orig.forEach(function(x){ mainEl.appendChild(x); });
+        L.remove(); R.remove(); gridEl.classList.remove(&quot;split&quot;);
+      }
+    }
+    if(mq.addEventListener) mq.addEventListener(&quot;change&quot;,apply); else mq.addListener(apply);
+    apply();
+  })();
   var DEFAULT_INPUTS = {custo:&quot;34,56&quot;, margem:&quot;30&quot;, emb:&quot;1,00&quot;, vend:&quot;3&quot;, ads:&quot;10&quot;, nf:&quot;10&quot;, afil:&quot;0&quot;, cupomTipo:&quot;rs&quot;, cupomVal:&quot;0&quot;, desc:&quot;30&quot;, arred:&quot;exato&quot;, simP:&quot;&quot;};
   var DEFAULT_T = {isencao:false, frete:5, dev:0};
   var DEFAULT_BANDS = [
@@ -3364,11 +3500,11 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     $("banco").classList.toggle("on",k==="banco");
     $("syncRow").style.display = k==="banco" ? "none" : "";
     $("btnReg").disabled = k==="banco";
-    document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===k);});
+    document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===k);}); document.querySelector(".dbbtn").setAttribute("aria-pressed", k==="banco");
     lsSet(LS_TAB,k);
     if(k==="banco") loadReg(); else setTimeout(function(){fit(k);},30);
   }
-  document.querySelectorAll(".tabs button").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.t);});});
+  document.querySelectorAll(".tabs button, .dbbtn").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.t);});});
 
   // sincronização entre abas
   var busy=false;
@@ -3492,6 +3628,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   document.querySelectorAll(".chips button").forEach(function(b){b.addEventListener("click",function(){setMot(b.dataset.m);});});
   function msg(el,txt,ok){ el.textContent=txt; el.className="msg on "+(ok?"ok":"err"); }
   function openReg(){
+    if($("prodIn").value.trim() && (!sel || $("prodIn").value!==label(sel))) pick();
     snap=takeSnap(); if(!snap) return;
     if(!(snap.custo>0)){ alertBox("Informe o custo do produto antes de registrar."); return; }
     $("mSub").textContent = "Marketplace: "+snap.marketplace;
