@@ -105,6 +105,11 @@ tbody tr:last-child td{border-bottom:0}
 .three{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:12px}
 @media (max-width:560px){.three{grid-template-columns:1fr}}
 .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+@media (min-width:1400px){
+  .top{max-width:none;padding:20px 28px 0}
+  #banco{max-width:none;padding:16px 28px 48px}
+  .sub{margin-bottom:12px}
+}
 </style>
 </head>
 <body>
@@ -263,6 +268,29 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 
 .sim{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
 .sim .field{margin:0;flex:1;min-width:160px}
+
+/* desktop largo: 3 colunas, menos rolagem */
+@media (min-width:1400px){
+  .wrap{max-width:none;padding:20px 28px 40px}
+  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
+  aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
+  aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
+  aside.panel &gt; .field:has(#desc){grid-column:1/-1}
+  aside.panel &gt; *{min-width:0}
+  aside.panel .inp{min-width:0}
+  aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  aside.panel .field{margin-bottom:10px}
+  aside.panel .sep{margin:10px 0}
+  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main &gt; *{grid-column:1;min-width:0}
+  main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
+  .tables th,.tables td{padding:5px 4px}
+  .tables .panel{padding:16px 20px}
+  .alerts .alert{padding:8px 12px}
+  main &gt; details{grid-column:1}
+  .hero .v{font-size:34px}
+}
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -589,7 +617,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         if(prevBd.lucro &gt;= promoBd.lucro - 0.005){
           alerts.push([&quot;A &quot;+brl(prev.max)+&quot; (faixa anterior) o lucro seria &quot;+brl(prevBd.lucro)+&quot;, igual ou maior que no preço atual.&quot;, false]);
         } else {
-          alerts.push([&quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta.&quot;, true]);
+          alerts.push([prevBd.lucro&lt;0 ? &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) a venda daria prejuízo de &quot;+brl(-prevBd.lucro)+&quot;. Por isso o preço fica nesta faixa.&quot; : &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta. Por isso o preço fica nesta faixa.&quot;, true]);
         }
       }
       if(p.d&gt;0 &amp;&amp; fullBd.bi!==promoBd.bi){
@@ -786,6 +814,29 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .fees .field{margin:0}
 .sim{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
 .sim .field{margin:0;flex:1;min-width:160px}
+
+/* desktop largo: 3 colunas, menos rolagem */
+@media (min-width:1400px){
+  .wrap{max-width:none;padding:20px 28px 40px}
+  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
+  aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
+  aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
+  aside.panel &gt; .field:has(#desc){grid-column:1/-1}
+  aside.panel &gt; *{min-width:0}
+  aside.panel .inp{min-width:0}
+  aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  aside.panel .field{margin-bottom:10px}
+  aside.panel .sep{margin:10px 0}
+  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main &gt; *{grid-column:1;min-width:0}
+  main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
+  .tables th,.tables td{padding:5px 4px}
+  .tables .panel{padding:16px 20px}
+  .alerts .alert{padding:8px 12px}
+  main &gt; details{grid-column:1}
+  .hero .v{font-size:34px}
+}
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -1130,7 +1181,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         if(prevBd.lucro &gt;= promoBd.lucro - 0.005){
           alerts.push([&quot;A &quot;+brl(prev.max)+&quot; (faixa anterior) o lucro seria &quot;+brl(prevBd.lucro)+&quot;, igual ou maior que no preço atual.&quot;, false]);
         } else {
-          alerts.push([&quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta.&quot;, true]);
+          alerts.push([prevBd.lucro&lt;0 ? &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) a venda daria prejuízo de &quot;+brl(-prevBd.lucro)+&quot;. Por isso o preço fica nesta faixa.&quot; : &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta. Por isso o preço fica nesta faixa.&quot;, true]);
         }
       }
       if(p.d&gt;0 &amp;&amp; fullBd.bi!==promoBd.bi){
@@ -1342,6 +1393,29 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 @media (max-width:560px){.env-f{grid-template-columns:1fr}}
 .sim{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
 .sim .field{margin:0;flex:1;min-width:160px}
+
+/* desktop largo: 3 colunas, menos rolagem */
+@media (min-width:1400px){
+  .wrap{max-width:none;padding:20px 28px 40px}
+  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
+  aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
+  aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
+  aside.panel &gt; .field:has(#desc){grid-column:1/-1}
+  aside.panel &gt; *{min-width:0}
+  aside.panel .inp{min-width:0}
+  aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  aside.panel .field{margin-bottom:10px}
+  aside.panel .sep{margin:10px 0}
+  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main &gt; *{grid-column:1;min-width:0}
+  main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
+  .tables th,.tables td{padding:5px 4px}
+  .tables .panel{padding:16px 20px}
+  .alerts .alert{padding:8px 12px}
+  main &gt; details{grid-column:1}
+  .hero .v{font-size:34px}
+}
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -1679,7 +1753,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         if(prevBd.lucro &gt;= promoBd.lucro - 0.005){
           alerts.push([&quot;A &quot;+brl(prev.max)+&quot; (faixa anterior) o lucro seria &quot;+brl(prevBd.lucro)+&quot;, igual ou maior que no preço atual.&quot;, false]);
         } else {
-          alerts.push([&quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta.&quot;, true]);
+          alerts.push([prevBd.lucro&lt;0 ? &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) a venda daria prejuízo de &quot;+brl(-prevBd.lucro)+&quot;. Por isso o preço fica nesta faixa.&quot; : &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta. Por isso o preço fica nesta faixa.&quot;, true]);
         }
       }
       if(p.d&gt;0 &amp;&amp; fullBd.bi!==promoBd.bi){
@@ -1876,6 +1950,29 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 @media (max-width:560px){.env-f{grid-template-columns:1fr}}
 .sim{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
 .sim .field{margin:0;flex:1;min-width:160px}
+
+/* desktop largo: 3 colunas, menos rolagem */
+@media (min-width:1400px){
+  .wrap{max-width:none;padding:20px 28px 40px}
+  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
+  aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
+  aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
+  aside.panel &gt; .field:has(#desc){grid-column:1/-1}
+  aside.panel &gt; *{min-width:0}
+  aside.panel .inp{min-width:0}
+  aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  aside.panel .field{margin-bottom:10px}
+  aside.panel .sep{margin:10px 0}
+  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main &gt; *{grid-column:1;min-width:0}
+  main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
+  .tables th,.tables td{padding:5px 4px}
+  .tables .panel{padding:16px 20px}
+  .alerts .alert{padding:8px 12px}
+  main &gt; details{grid-column:1}
+  .hero .v{font-size:34px}
+}
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -2208,7 +2305,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         if(prevBd.lucro &gt;= promoBd.lucro - 0.005){
           alerts.push([&quot;A &quot;+brl(prev.max)+&quot; (faixa anterior) o lucro seria &quot;+brl(prevBd.lucro)+&quot;, igual ou maior que no preço atual.&quot;, false]);
         } else {
-          alerts.push([&quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta.&quot;, true]);
+          alerts.push([prevBd.lucro&lt;0 ? &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) a venda daria prejuízo de &quot;+brl(-prevBd.lucro)+&quot;. Por isso o preço fica nesta faixa.&quot; : &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta. Por isso o preço fica nesta faixa.&quot;, true]);
         }
       }
       if(p.d&gt;0 &amp;&amp; fullBd.bi!==promoBd.bi){
@@ -2404,6 +2501,29 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 @media (max-width:560px){.env-f{grid-template-columns:1fr}}
 .sim{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
 .sim .field{margin:0;flex:1;min-width:160px}
+
+/* desktop largo: 3 colunas, menos rolagem */
+@media (min-width:1400px){
+  .wrap{max-width:none;padding:20px 28px 40px}
+  .grid{grid-template-columns:400px minmax(0,1fr);margin-top:16px}
+  aside.panel{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;align-content:start}
+  aside.panel &gt; h2, aside.panel &gt; .sep, aside.panel &gt; .row-actions,
+  aside.panel &gt; .field:has(.cup), aside.panel &gt; .field:has(#arred), aside.panel &gt; .field:has(.seg-tog),
+  aside.panel &gt; .field:has(#desc){grid-column:1/-1}
+  aside.panel &gt; *{min-width:0}
+  aside.panel .inp{min-width:0}
+  aside.panel .field label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  aside.panel .field{margin-bottom:10px}
+  aside.panel .sep{margin:10px 0}
+  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start}
+  main &gt; *{grid-column:1;min-width:0}
+  main &gt; .tables{grid-column:2;grid-row:1 / span 8;margin-top:0 !important;grid-template-columns:1fr;gap:16px}
+  .tables th,.tables td{padding:5px 4px}
+  .tables .panel{padding:16px 20px}
+  .alerts .alert{padding:8px 12px}
+  main &gt; details{grid-column:1}
+  .hero .v{font-size:34px}
+}
 &lt;/style&gt;
 &lt;style&gt;header{display:none}.wrap{padding-top:0}.grid{margin-top:16px}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -2738,7 +2858,7 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         if(prevBd.lucro &gt;= promoBd.lucro - 0.005){
           alerts.push([&quot;A &quot;+brl(prev.max)+&quot; (faixa anterior) o lucro seria &quot;+brl(prevBd.lucro)+&quot;, igual ou maior que no preço atual.&quot;, false]);
         } else {
-          alerts.push([&quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta.&quot;, true]);
+          alerts.push([prevBd.lucro&lt;0 ? &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) a venda daria prejuízo de &quot;+brl(-prevBd.lucro)+&quot;. Por isso o preço fica nesta faixa.&quot; : &quot;Na faixa anterior (até &quot;+brl(prev.max)+&quot;) o lucro máximo seria &quot;+brl(prevBd.lucro)+&quot; (&quot;+pct(prevBd.mCusto)+&quot; sobre o custo), abaixo da sua meta. Por isso o preço fica nesta faixa.&quot;, true]);
         }
       }
       if(p.d&gt;0 &amp;&amp; fullBd.bi!==promoBd.bi){
