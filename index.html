@@ -287,6 +287,14 @@ button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
+.simtog{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;font-weight:700;font-size:16px;color:var(--ink)}
+.simtog:focus-visible{outline:3px solid var(--plum-soft);outline-offset:4px;border-radius:6px}
+.simtog .simhint{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+.simtog .chev{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--plum-soft);color:var(--plum);font-size:13px;transition:transform .2s}
+.simbox:not(.closed) .chev{transform:rotate(180deg)}
+.simbox:not(.closed) .simtog{margin-bottom:12px}
+.simbox.closed .simbody{display:none}
+.simbox.closed{padding-top:12px;padding-bottom:12px}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
 .simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
@@ -339,8 +347,9 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .marker i{font-size:11px;padding:1px 6px}
   .ruler .legend{font-size:11px;margin-top:0}
   /* simulador em faixa */
-  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
-  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim){padding:12px 18px}
+  .simbody{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start}
+  .simtog{font-size:14px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
   .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
@@ -439,14 +448,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         &lt;/section&gt;
       &lt;/div&gt;
 
-      &lt;section class=&quot;panel&quot; style=&quot;margin-top:20px&quot;&gt;
-        &lt;h2&gt;Simular outro preço&lt;/h2&gt;
+      &lt;section class=&quot;panel simbox closed&quot; id=&quot;simBox&quot; style=&quot;margin-top:20px&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;simtog&quot; id=&quot;simTog&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;simBody&quot;&gt;&lt;span class=&quot;simtit&quot;&gt;Simular outro preço&lt;/span&gt;&lt;span class=&quot;simhint&quot; id=&quot;simHint&quot;&gt;Abrir&lt;/span&gt;&lt;span class=&quot;chev&quot; aria-hidden=&quot;true&quot;&gt;&amp;#9662;&lt;/span&gt;&lt;/button&gt;
+        &lt;div class=&quot;simbody&quot; id=&quot;simBody&quot;&gt;
         &lt;div class=&quot;sim&quot;&gt;
           &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;simP&quot;&gt;Preço de venda final&lt;/label&gt;
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
         &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -782,6 +793,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     drawBandsTable(); render();
   });
 
+  // simulador recolhível: fechado quando não há preço digitado
+  (function(){
+    var box=document.getElementById(&quot;simBox&quot;), tog=document.getElementById(&quot;simTog&quot;), hint=document.getElementById(&quot;simHint&quot;);
+    if(!box) return;
+    function set(open){ box.classList.toggle(&quot;closed&quot;,!open); tog.setAttribute(&quot;aria-expanded&quot;,open); hint.textContent = open ? &quot;Recolher&quot; : &quot;Abrir&quot;; }
+    tog.addEventListener(&quot;click&quot;,function(){ var open=box.classList.contains(&quot;closed&quot;); set(open); if(open) setTimeout(function(){ document.getElementById(&quot;simP&quot;).focus(); },30); });
+    var v=&quot;&quot;; try{ v=(JSON.parse(localStorage.getItem(LS_IN)||&quot;{}&quot;).simP)||&quot;&quot;; }catch(e){}
+    set(!!String(v).trim());
+  })();
   drawBandsTable();
   render();
 })();
@@ -911,6 +931,14 @@ button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
+.simtog{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;font-weight:700;font-size:16px;color:var(--ink)}
+.simtog:focus-visible{outline:3px solid var(--plum-soft);outline-offset:4px;border-radius:6px}
+.simtog .simhint{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+.simtog .chev{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--plum-soft);color:var(--plum);font-size:13px;transition:transform .2s}
+.simbox:not(.closed) .chev{transform:rotate(180deg)}
+.simbox:not(.closed) .simtog{margin-bottom:12px}
+.simbox.closed .simbody{display:none}
+.simbox.closed{padding-top:12px;padding-bottom:12px}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
 .simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
@@ -976,8 +1004,9 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .marker i{font-size:11px;padding:1px 6px}
   .ruler .legend{font-size:11px;margin-top:0}
   /* simulador em faixa */
-  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
-  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim){padding:12px 18px}
+  .simbody{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start}
+  .simtog{font-size:14px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
   .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
@@ -1086,14 +1115,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         &lt;/section&gt;
       &lt;/div&gt;
 
-      &lt;section class=&quot;panel&quot; style=&quot;margin-top:20px&quot;&gt;
-        &lt;h2&gt;Simular outro preço&lt;/h2&gt;
+      &lt;section class=&quot;panel simbox closed&quot; id=&quot;simBox&quot; style=&quot;margin-top:20px&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;simtog&quot; id=&quot;simTog&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;simBody&quot;&gt;&lt;span class=&quot;simtit&quot;&gt;Simular outro preço&lt;/span&gt;&lt;span class=&quot;simhint&quot; id=&quot;simHint&quot;&gt;Abrir&lt;/span&gt;&lt;span class=&quot;chev&quot; aria-hidden=&quot;true&quot;&gt;&amp;#9662;&lt;/span&gt;&lt;/button&gt;
+        &lt;div class=&quot;simbody&quot; id=&quot;simBody&quot;&gt;
         &lt;div class=&quot;sim&quot;&gt;
           &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;simP&quot;&gt;Preço de venda final&lt;/label&gt;
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
         &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -1459,6 +1490,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
     drawBandsTable(); render();
   });
 
+  // simulador recolhível: fechado quando não há preço digitado
+  (function(){
+    var box=document.getElementById(&quot;simBox&quot;), tog=document.getElementById(&quot;simTog&quot;), hint=document.getElementById(&quot;simHint&quot;);
+    if(!box) return;
+    function set(open){ box.classList.toggle(&quot;closed&quot;,!open); tog.setAttribute(&quot;aria-expanded&quot;,open); hint.textContent = open ? &quot;Recolher&quot; : &quot;Abrir&quot;; }
+    tog.addEventListener(&quot;click&quot;,function(){ var open=box.classList.contains(&quot;closed&quot;); set(open); if(open) setTimeout(function(){ document.getElementById(&quot;simP&quot;).focus(); },30); });
+    var v=&quot;&quot;; try{ v=(JSON.parse(localStorage.getItem(LS_IN)||&quot;{}&quot;).simP)||&quot;&quot;; }catch(e){}
+    set(!!String(v).trim());
+  })();
   drawBandsTable();
   render();
 })();
@@ -1588,6 +1628,14 @@ button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
+.simtog{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;font-weight:700;font-size:16px;color:var(--ink)}
+.simtog:focus-visible{outline:3px solid var(--plum-soft);outline-offset:4px;border-radius:6px}
+.simtog .simhint{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+.simtog .chev{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--plum-soft);color:var(--plum);font-size:13px;transition:transform .2s}
+.simbox:not(.closed) .chev{transform:rotate(180deg)}
+.simbox:not(.closed) .simtog{margin-bottom:12px}
+.simbox.closed .simbody{display:none}
+.simbox.closed{padding-top:12px;padding-bottom:12px}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
 .simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
@@ -1646,8 +1694,9 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .marker i{font-size:11px;padding:1px 6px}
   .ruler .legend{font-size:11px;margin-top:0}
   /* simulador em faixa */
-  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
-  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim){padding:12px 18px}
+  .simbody{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start}
+  .simtog{font-size:14px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
   .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
@@ -1746,14 +1795,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         &lt;/section&gt;
       &lt;/div&gt;
 
-      &lt;section class=&quot;panel&quot; style=&quot;margin-top:20px&quot;&gt;
-        &lt;h2&gt;Simular outro preço&lt;/h2&gt;
+      &lt;section class=&quot;panel simbox closed&quot; id=&quot;simBox&quot; style=&quot;margin-top:20px&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;simtog&quot; id=&quot;simTog&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;simBody&quot;&gt;&lt;span class=&quot;simtit&quot;&gt;Simular outro preço&lt;/span&gt;&lt;span class=&quot;simhint&quot; id=&quot;simHint&quot;&gt;Abrir&lt;/span&gt;&lt;span class=&quot;chev&quot; aria-hidden=&quot;true&quot;&gt;&amp;#9662;&lt;/span&gt;&lt;/button&gt;
+        &lt;div class=&quot;simbody&quot; id=&quot;simBody&quot;&gt;
         &lt;div class=&quot;sim&quot;&gt;
           &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;simP&quot;&gt;Preço de venda final&lt;/label&gt;
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
         &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -2107,6 +2158,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   $(&quot;envTeto&quot;).addEventListener(&quot;input&quot;, function(e){ var v = num(e.target.value); if(isFinite(v)){ env.teto = v; saveEnv(); } });
   drawEnv();
 
+  // simulador recolhível: fechado quando não há preço digitado
+  (function(){
+    var box=document.getElementById(&quot;simBox&quot;), tog=document.getElementById(&quot;simTog&quot;), hint=document.getElementById(&quot;simHint&quot;);
+    if(!box) return;
+    function set(open){ box.classList.toggle(&quot;closed&quot;,!open); tog.setAttribute(&quot;aria-expanded&quot;,open); hint.textContent = open ? &quot;Recolher&quot; : &quot;Abrir&quot;; }
+    tog.addEventListener(&quot;click&quot;,function(){ var open=box.classList.contains(&quot;closed&quot;); set(open); if(open) setTimeout(function(){ document.getElementById(&quot;simP&quot;).focus(); },30); });
+    var v=&quot;&quot;; try{ v=(JSON.parse(localStorage.getItem(LS_IN)||&quot;{}&quot;).simP)||&quot;&quot;; }catch(e){}
+    set(!!String(v).trim());
+  })();
   drawBandsTable();
   render();
 })();
@@ -2236,6 +2296,14 @@ button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
+.simtog{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;font-weight:700;font-size:16px;color:var(--ink)}
+.simtog:focus-visible{outline:3px solid var(--plum-soft);outline-offset:4px;border-radius:6px}
+.simtog .simhint{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+.simtog .chev{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--plum-soft);color:var(--plum);font-size:13px;transition:transform .2s}
+.simbox:not(.closed) .chev{transform:rotate(180deg)}
+.simbox:not(.closed) .simtog{margin-bottom:12px}
+.simbox.closed .simbody{display:none}
+.simbox.closed{padding-top:12px;padding-bottom:12px}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
 .simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
@@ -2294,8 +2362,9 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .marker i{font-size:11px;padding:1px 6px}
   .ruler .legend{font-size:11px;margin-top:0}
   /* simulador em faixa */
-  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
-  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim){padding:12px 18px}
+  .simbody{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start}
+  .simtog{font-size:14px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
   .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
@@ -2394,14 +2463,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         &lt;/section&gt;
       &lt;/div&gt;
 
-      &lt;section class=&quot;panel&quot; style=&quot;margin-top:20px&quot;&gt;
-        &lt;h2&gt;Simular outro preço&lt;/h2&gt;
+      &lt;section class=&quot;panel simbox closed&quot; id=&quot;simBox&quot; style=&quot;margin-top:20px&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;simtog&quot; id=&quot;simTog&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;simBody&quot;&gt;&lt;span class=&quot;simtit&quot;&gt;Simular outro preço&lt;/span&gt;&lt;span class=&quot;simhint&quot; id=&quot;simHint&quot;&gt;Abrir&lt;/span&gt;&lt;span class=&quot;chev&quot; aria-hidden=&quot;true&quot;&gt;&amp;#9662;&lt;/span&gt;&lt;/button&gt;
+        &lt;div class=&quot;simbody&quot; id=&quot;simBody&quot;&gt;
         &lt;div class=&quot;sim&quot;&gt;
           &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;simP&quot;&gt;Preço de venda final&lt;/label&gt;
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
         &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -2749,6 +2820,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   $(&quot;freteV&quot;).addEventListener(&quot;input&quot;, function(e){ var v = num(e.target.value); if(isFinite(v)){ tx.frete = v; saveTx(); } });
   drawTx();
 
+  // simulador recolhível: fechado quando não há preço digitado
+  (function(){
+    var box=document.getElementById(&quot;simBox&quot;), tog=document.getElementById(&quot;simTog&quot;), hint=document.getElementById(&quot;simHint&quot;);
+    if(!box) return;
+    function set(open){ box.classList.toggle(&quot;closed&quot;,!open); tog.setAttribute(&quot;aria-expanded&quot;,open); hint.textContent = open ? &quot;Recolher&quot; : &quot;Abrir&quot;; }
+    tog.addEventListener(&quot;click&quot;,function(){ var open=box.classList.contains(&quot;closed&quot;); set(open); if(open) setTimeout(function(){ document.getElementById(&quot;simP&quot;).focus(); },30); });
+    var v=&quot;&quot;; try{ v=(JSON.parse(localStorage.getItem(LS_IN)||&quot;{}&quot;).simP)||&quot;&quot;; }catch(e){}
+    set(!!String(v).trim());
+  })();
   drawBandsTable();
   render();
 })();
@@ -2878,6 +2958,14 @@ button.primary{background:var(--plum);border-color:var(--plum);color:var(--panel
 button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
 .note{font-size:12px;color:var(--muted)}
 .simh{display:none}
+.simtog{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;font-weight:700;font-size:16px;color:var(--ink)}
+.simtog:focus-visible{outline:3px solid var(--plum-soft);outline-offset:4px;border-radius:6px}
+.simtog .simhint{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+.simtog .chev{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--plum-soft);color:var(--plum);font-size:13px;transition:transform .2s}
+.simbox:not(.closed) .chev{transform:rotate(180deg)}
+.simbox:not(.closed) .simtog{margin-bottom:12px}
+.simbox.closed .simbody{display:none}
+.simbox.closed{padding-top:12px;padding-bottom:12px}
 .simh .chip{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:6px 10px;min-width:0}
 .simh .chip .k{font-size:11px;line-height:1.25;color:var(--muted);white-space:normal}
 .simh .chip .v{font-size:14px;font-weight:700;white-space:nowrap}
@@ -2936,8 +3024,9 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   .marker i{font-size:11px;padding:1px 6px}
   .ruler .legend{font-size:11px;margin-top:0}
   /* simulador em faixa */
-  .panel:has(#tSim){display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 18px}
-  .panel:has(#tSim) &gt; h2{grid-column:1/-1;font-size:14px;margin:0 0 8px}
+  .panel:has(#tSim){padding:12px 18px}
+  .simbody{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:16px;align-items:start}
+  .simtog{font-size:14px}
   .panel:has(#tSim) .sim .field{margin:0}
   .panel:has(#tSim) .scroll{display:none}
   .simh{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;align-self:end}
@@ -3036,14 +3125,16 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
         &lt;/section&gt;
       &lt;/div&gt;
 
-      &lt;section class=&quot;panel&quot; style=&quot;margin-top:20px&quot;&gt;
-        &lt;h2&gt;Simular outro preço&lt;/h2&gt;
+      &lt;section class=&quot;panel simbox closed&quot; id=&quot;simBox&quot; style=&quot;margin-top:20px&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;simtog&quot; id=&quot;simTog&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;simBody&quot;&gt;&lt;span class=&quot;simtit&quot;&gt;Simular outro preço&lt;/span&gt;&lt;span class=&quot;simhint&quot; id=&quot;simHint&quot;&gt;Abrir&lt;/span&gt;&lt;span class=&quot;chev&quot; aria-hidden=&quot;true&quot;&gt;&amp;#9662;&lt;/span&gt;&lt;/button&gt;
+        &lt;div class=&quot;simbody&quot; id=&quot;simBody&quot;&gt;
         &lt;div class=&quot;sim&quot;&gt;
           &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;simP&quot;&gt;Preço de venda final&lt;/label&gt;
             &lt;div class=&quot;inp&quot;&gt;&lt;span&gt;R$&lt;/span&gt;&lt;input id=&quot;simP&quot; inputmode=&quot;decimal&quot; placeholder=&quot;Ex.: 94,90&quot; data-key=&quot;simP&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;tSim&quot;&gt;&lt;/table&gt;&lt;/div&gt;
         &lt;div class=&quot;simh&quot; id=&quot;simH&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/section&gt;
 
       &lt;details class=&quot;panel&quot; id=&quot;tabDetails&quot;&gt;
@@ -3394,6 +3485,15 @@ button:focus-visible{outline:3px solid var(--plum-soft);outline-offset:1px}
   $(&quot;devV&quot;).addEventListener(&quot;input&quot;, function(e){ var v = num(e.target.value); if(isFinite(v)){ tx.dev = v; saveTx(); } });
   drawTx();
 
+  // simulador recolhível: fechado quando não há preço digitado
+  (function(){
+    var box=document.getElementById(&quot;simBox&quot;), tog=document.getElementById(&quot;simTog&quot;), hint=document.getElementById(&quot;simHint&quot;);
+    if(!box) return;
+    function set(open){ box.classList.toggle(&quot;closed&quot;,!open); tog.setAttribute(&quot;aria-expanded&quot;,open); hint.textContent = open ? &quot;Recolher&quot; : &quot;Abrir&quot;; }
+    tog.addEventListener(&quot;click&quot;,function(){ var open=box.classList.contains(&quot;closed&quot;); set(open); if(open) setTimeout(function(){ document.getElementById(&quot;simP&quot;).focus(); },30); });
+    var v=&quot;&quot;; try{ v=(JSON.parse(localStorage.getItem(LS_IN)||&quot;{}&quot;).simP)||&quot;&quot;; }catch(e){}
+    set(!!String(v).trim());
+  })();
   drawBandsTable();
   render();
 })();
